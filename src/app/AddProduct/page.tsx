@@ -129,7 +129,7 @@ const AddProductPage = () => {
                         <li><strong>Name:</strong> {addedProduct.productName}</li>
                         <li><strong>Stock:</strong> {addedProduct.productStock}</li>
                         <li><strong>Price:</strong> ₹{addedProduct.productPrice}</li>
-                        <li><strong>Updated At:</strong> {new Date(addedProduct.lastUpdatedAt).toLocaleString()}</li>
+                        <li><strong>Updated At:</strong> {new Date(addedProduct.lastUpdatedAt).toLocaleString("en-IN")}</li>
                     </ul>
                 </div>
             )}
