@@ -4,27 +4,20 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import LoginForm from "@/components/LoginForm";
 import LoadingScreen from "@/components/LoadingScreen";
-import ApiHelper from "@/helpers/ApiHelper";
+import apiHelper from "@/helpers/ApiHelper";
 
 const LoginPage = () => {
     const router = useRouter();
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const checkLogin = async () => {
-            try {
-                const result  = await ApiHelper.verifyLogin();
-                if (!result.loggedIn)
-                    setLoading(false);
-
-                router.push("/Dashboard");
-
-            }catch(err){
-                console.error(err);
-                    setLoading(false);
-            }
-        };
-        checkLogin();
+        apiHelper.verifyLogin()
+            .then(res => {
+                if (res.loggedIn)
+                    router.push("/Dashboard");
+            })
+            .catch(err => console.log(err))
+            .finally(() => setLoading(false));
     }, [router]);
 
     if (loading) return <LoadingScreen />;

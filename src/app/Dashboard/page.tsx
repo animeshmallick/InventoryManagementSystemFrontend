@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import LoadingScreen from "@/components/LoadingScreen";
-import ApiHelper from "@/helpers/ApiHelper";
+import apiHelper from "@/helpers/ApiHelper";
 
 const DashboardPage = () => {
     const router = useRouter();
@@ -11,22 +11,19 @@ const DashboardPage = () => {
     const [admin, setAdmin] = useState(false);
 
     useEffect(() => {
-        const checkLogin = async () => {
-            try {
-                const res = await ApiHelper.verifyLogin();
+        apiHelper.verifyLogin()
+            .then(res => {
+                console.log(res);
                 if (!res.loggedIn)
-                    router.push("/Login");
-                else{
-                    if(res.user?.userRole === "admin")
-                        setAdmin(true);
-                    setChecking(false);
-                }
-            }catch(err){
+                    return router.push("/Login");
+                if (res.user.userRole === "admin")
+                    setAdmin(true);
+                setChecking(false);
+            })
+            .catch(err => {
                 console.error(err);
                 setChecking(false);
-            }
-        };
-        checkLogin();
+            });
     }, [router]);
 
     const handleAction = async (action: string) => {
@@ -35,13 +32,12 @@ const DashboardPage = () => {
     };
 
     const handleLogout = async ()  => {
-        try {
-            const res = await ApiHelper.logoutUser();
-            if (res.data.success)
-                router.push("/Login");
-        }catch(err){
-            console.error(err);
-        }
+        apiHelper.logoutUser()
+            .then((result) => {
+                if (result.success)
+                    return router.push("/Login");
+            })
+            .catch(err => console.log(err));
     };
 
     if (checking) return <LoadingScreen />;

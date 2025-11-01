@@ -12,29 +12,29 @@ const api = axios.create({
 
 const ApiHelper = {
     async loginUser(loginDetails: LoginDetails) : Promise<LoginResponse> {
-            const res : LoginResponse = await api.post("/login", loginDetails);
-            return res;
+        return api.post("/login", loginDetails)
+            .then(response => response.data)
+            .catch(error => error.response.data);
     },
     async verifyLogin() :Promise<VerifyLoginResponse> {
-            const res = await api.post("/login/verify");
-            return res.data;
+        return api.post("/login/verify")
+            .then(response => response.data)
+            .catch(error => error.response.data);
     },
     async logoutUser(): Promise<LogoutResponse> {
-            const res : LogoutResponse = await api.post("/login/logout");
-            return res;
+        return api.post("/login/logout")
+            .then(response => response.data)
+            .catch(error => error.response.data);
     },
     async getAllProducts(){
-            const res = await api.post("/allProducts");
-            return res.data;
+        return api.post("/allProducts")
+            .then(response => response.data)
+            .catch(error => error.response.data);
     },
     async addProduct(productData:AddProductRequest):Promise<AddProductResponse>{
-        try{
-            const res = await api.post("/addProduct", productData);
-            return res.data;
-        }catch(err){
-            console.error("Error Adding Product: ", err);
-            throw err;
-        }
+        return api.post("/addProduct", productData)
+            .then(response => response.data)
+            .catch(error => error.response.data);
     },
 
 };

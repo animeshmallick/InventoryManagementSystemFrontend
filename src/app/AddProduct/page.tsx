@@ -8,6 +8,7 @@ import SimilarProducts from "@/components/SimilarProducts";
 import BackToDashboard from "@/components/BackToDashboard";
 import ApiHelper from "@/helpers/ApiHelper";
 import {Product, AddProductRequest, AddProductResponse, VerifyLoginResponse} from "@/blueprint/blueprint";
+import apiHelper from "@/helpers/ApiHelper";
 
 
 
@@ -27,31 +28,16 @@ const AddProductPage = () => {
     });
 
     useEffect(() => {
-        //Verify Login
-        const checkLogin = async () => {
-            try {
-                const res: VerifyLoginResponse = await ApiHelper.verifyLogin();
+        apiHelper.verifyLogin()
+            .then(res => {
                 if (res.loggedIn && res.user?.userRole === "admin")
-                    router.push("/AddProduct");
-                else {
-                    setLoading(false);
-                    alert("Only Admins can add product!!!");
-                    router.push("/Dashboard");
-                }
-            }catch (err){
+                    return router.push("/AddProduct");
+                apiHelper.getAllProducts().then(data => setAllProducts(data));
+            })
+            .catch(err => {
                 setLoading(false);
-                router.push("/Dashboard");
-            }
-        };
-        checkLogin();
-
-        // Load all products once
-        const loadProducts = async () => {
-            const data = await ApiHelper.getAllProducts();
-
-            setAllProducts(data);
-        };
-        loadProducts();
+                router.push("/Login");
+            });
     }, [router]);
 
     // When product name changes in child form
@@ -82,15 +68,13 @@ const AddProductPage = () => {
         setSuccessMessage("");
         setAddedProduct(null);
 
-        try {
-           const data : AddProductResponse = await ApiHelper.addProduct(productData);
-            setSuccessMessage("Product successfully added!");
-            setAddedProduct(data.product);
-        } catch (error) {
-            setSuccessMessage("Failed to add product");
-        } finally {
-            setLoading(false);
-        }
+        apiHelper.addProduct(productData)
+            .then(res => {
+                setSuccessMessage("Product successfully added!");
+                setAddedProduct(res.product);
+            })
+            .catch(err => setSuccessMessage("Failed to add product"))
+            .finally(() => setLoading(false));
     };
 
     return (

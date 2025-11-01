@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import BackToDashboard from "@/components/BackToDashboard";
 import { ShoppingBag, Search, X } from "lucide-react";
 import ApiHelper from "@/helpers/ApiHelper";
+import apiHelper from "@/helpers/ApiHelper";
 
 interface Product {
     product_id: string;
@@ -23,24 +24,14 @@ const ShowAllProductsPage = () => {
     const [searchQuery, setSearchQuery] = useState("");
 
     useEffect(() => {
-        const checkLogin = async () => {
-            const result = await ApiHelper.verifyLogin();
-            if (!result.loggedIn) {
-                router.push("/Login");
-                return;
-            }
-
-            try {
-                const data = await ApiHelper.getAllProducts();
-                setProducts(data);
-            } catch (err) {
-                console.error("Failed to fetch products:", err);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        checkLogin();
+        apiHelper.verifyLogin()
+            .then(result => {
+                if (!result.loggedIn)
+                    return router.push("/Login");
+                apiHelper.getAllProducts().then(data => setProducts(data))
+            })
+            .catch(err => console.log(err))
+            .finally(() => setLoading(false));
     }, [router]);
 
     // Filtered list based on search

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import PasswordInput from "./PasswordInput";
 import ApiHelper from "@/helpers/ApiHelper";
 import {LoginResponse} from "@/blueprint/blueprint";
+import apiHelper from "@/helpers/ApiHelper";
 
 const LoginForm = () => {
     const router = useRouter();
@@ -20,18 +21,19 @@ const LoginForm = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
-        try{
-            const res : LoginResponse = await ApiHelper.loginUser(loginDetails);
-            if(res.data.success) {
-                router.push("/Dashboard");
-            }else{
+        apiHelper.loginUser(loginDetails)
+            .then((result) => {
+                if (result.success)
+                    router.push("/Dashboard");
+                else{
+                    setLoading(false);
+                    router.push("/Login");
+                }
+            })
+            .catch((err) => {
                 setLoading(false);
                 router.push("/Login");
-            }
-        }catch(error){
-            setLoading(false);
-            router.push("/Login");
-        }
+            })
     };
 
     return (
