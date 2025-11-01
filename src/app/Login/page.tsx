@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { verifyLogin } from "@/helpers/LoginHelper";
 import { useRouter } from "next/navigation";
 import LoginForm from "@/components/LoginForm";
 import LoadingScreen from "@/components/LoadingScreen";
+import ApiHelper from "@/helpers/ApiHelper";
 
 const LoginPage = () => {
     const router = useRouter();
@@ -12,9 +12,17 @@ const LoginPage = () => {
 
     useEffect(() => {
         const checkLogin = async () => {
-            const result = await verifyLogin();
-            if (result?.loggedIn) router.push("/Dashboard");
-            else setLoading(false);
+            try {
+                const result  = await ApiHelper.verifyLogin();
+                if (!result.loggedIn)
+                    setLoading(false);
+
+                router.push("/Dashboard");
+
+            }catch(err){
+                console.error(err);
+                    setLoading(false);
+            }
         };
         checkLogin();
     }, [router]);

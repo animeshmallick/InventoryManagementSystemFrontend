@@ -1,20 +1,28 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { verifyLogin, logoutUser } from "@/helpers/LoginHelper";
 import { useRouter } from "next/navigation";
 import LoadingScreen from "@/components/LoadingScreen";
+import ApiHelper from "@/helpers/ApiHelper";
 
 const DashboardPage = () => {
     const router = useRouter();
     const [checking, setChecking] = useState(true);
+    const [admin, setAdmin] = useState(false);
 
     useEffect(() => {
         const checkLogin = async () => {
-            const res = await verifyLogin();
-            if (!res?.loggedIn){
-                router.push("/Login");
-            } else {
+            try {
+                const res = await ApiHelper.verifyLogin();
+                if (!res.loggedIn)
+                    router.push("/Login");
+                else{
+                    if(res.user?.userRole === "admin")
+                        setAdmin(true);
+                    setChecking(false);
+                }
+            }catch(err){
+                console.error(err);
                 setChecking(false);
             }
         };
@@ -26,9 +34,14 @@ const DashboardPage = () => {
 
     };
 
-    const handleLogout = async () => {
-        await logoutUser();
-        router.push("/Login");
+    const handleLogout = async ()  => {
+        try {
+            const res = await ApiHelper.logoutUser();
+            if (res.data.success)
+                router.push("/Login");
+        }catch(err){
+            console.error(err);
+        }
     };
 
     if (checking) return <LoadingScreen />;
@@ -41,6 +54,7 @@ const DashboardPage = () => {
 
             <div className="flex flex-wrap justify-center gap-6 mb-10">
                 <button
+                    hidden={!admin}
                     onClick={() => handleAction("AddProduct")}
                     className="w-full py-2 rounded-lg font-semibold shadow-md text-white transition bg-blue-600 hover:bg-blue-700"
                 >

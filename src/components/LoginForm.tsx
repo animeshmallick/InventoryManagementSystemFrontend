@@ -2,8 +2,9 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { loginUser } from "@/helpers/LoginHelper";
 import PasswordInput from "./PasswordInput";
+import ApiHelper from "@/helpers/ApiHelper";
+import {LoginResponse} from "@/blueprint/blueprint";
 
 const LoginForm = () => {
     const router = useRouter();
@@ -19,15 +20,18 @@ const LoginForm = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
-        console.log(loginDetails);
-        const res = await loginUser(loginDetails.phone, loginDetails.password);
-        console.log(res);
-            if(res.success) {
+        try{
+            const res : LoginResponse = await ApiHelper.loginUser(loginDetails);
+            if(res.data.success) {
                 router.push("/Dashboard");
             }else{
                 setLoading(false);
                 router.push("/Login");
             }
+        }catch(error){
+            setLoading(false);
+            router.push("/Login");
+        }
     };
 
     return (

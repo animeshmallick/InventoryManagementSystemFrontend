@@ -4,18 +4,12 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import AddProductForm from "@/components/AddProductForm";
 import SuccessMessage from "@/components/SuccessMessage";
-import {verifyLogin} from "@/helpers/LoginHelper";
 import SimilarProducts from "@/components/SimilarProducts";
 import BackToDashboard from "@/components/BackToDashboard";
+import ApiHelper from "@/helpers/ApiHelper";
+import {Product, AddProductRequest, AddProductResponse, VerifyLoginResponse} from "@/blueprint/blueprint";
 
-interface Product {
-    product_id: string;
-    productName: string;
-    productStock: number;
-    productPrice: number;
-    createdBy: string;
-    lastUpdatedAt: string;
-}
+
 
 const AddProductPage = () => {
     const router = useRouter();
@@ -35,26 +29,27 @@ const AddProductPage = () => {
     useEffect(() => {
         //Verify Login
         const checkLogin = async () => {
-            const result = await verifyLogin();
-            if (result?.loggedIn) router.push("/AddProduct");
-            else {
+            try {
+                const res: VerifyLoginResponse = await ApiHelper.verifyLogin();
+                if (res.loggedIn && res.user?.userRole === "admin")
+                    router.push("/AddProduct");
+                else {
+                    setLoading(false);
+                    alert("Only Admins can add product!!!");
+                    router.push("/Dashboard");
+                }
+            }catch (err){
                 setLoading(false);
-                router.push("/Login");}
+                router.push("/Dashboard");
+            }
         };
         checkLogin();
 
         // Load all products once
         const loadProducts = async () => {
-            try {
-                const res = await fetch("http://localhost:7070/allProducts", {
-                    method: "POST",
-                    credentials: "include"
-                });
-                const data = await res.json();
-                setAllProducts(data);
-            } catch (err) {
-                console.error("Failed to fetch products:", err);
-            }
+            const data = await ApiHelper.getAllProducts();
+
+            setAllProducts(data);
         };
         loadProducts();
     }, [router]);
@@ -73,35 +68,22 @@ const AddProductPage = () => {
     };
 
     // Called when user clicks a similar product
-    const handleSelectProduct = (product: any) => {
+    const handleSelectProduct = (product: Product) => {
         setFormData({
             productName: product.productName,
-            productQuantity: product.productStock.toString(),
-            productPrice: product.productPrice.toString(),
+            productQuantity: product.productStock,
+            productPrice: product.productPrice,
         });
         setSimilarProducts([]); // hide suggestions after selection
     };
 
-    const handleAddProduct = async (productData: {
-        productName: string;
-        productQuantity: number;
-        productPrice: number;
-    }) => {
+    const handleAddProduct = async (productData: AddProductRequest) => {
         setLoading(true);
         setSuccessMessage("");
         setAddedProduct(null);
 
         try {
-            const res = await fetch("http://localhost:7070/addProduct", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                credentials: "include",
-                body: JSON.stringify(productData),
-            });
-
-            const data = await res.json();
-            if (res.status !== 200) throw new Error(data.message || "Failed to add product");
-
+           const data : AddProductResponse = await ApiHelper.addProduct(productData);
             setSuccessMessage("Product successfully added!");
             setAddedProduct(data.product);
         } catch (error) {

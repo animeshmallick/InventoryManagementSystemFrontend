@@ -3,14 +3,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { ShoppingBag } from "lucide-react";
-
-interface Product {
-    product_id: string;
-    productName: string;
-    productStock: number;
-    productPrice: number;
-    lastUpdatedAt: string;
-}
+import {Product} from "@/blueprint/blueprint";
 
 interface SimilarProductsProps {
     products: Product[];

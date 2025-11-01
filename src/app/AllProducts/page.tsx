@@ -3,9 +3,9 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { verifyLogin } from "@/helpers/LoginHelper";
 import BackToDashboard from "@/components/BackToDashboard";
 import { ShoppingBag, Search, X } from "lucide-react";
+import ApiHelper from "@/helpers/ApiHelper";
 
 interface Product {
     product_id: string;
@@ -24,18 +24,14 @@ const ShowAllProductsPage = () => {
 
     useEffect(() => {
         const checkLogin = async () => {
-            const result = await verifyLogin();
-            if (!result?.loggedIn) {
+            const result = await ApiHelper.verifyLogin();
+            if (!result.loggedIn) {
                 router.push("/Login");
                 return;
             }
 
             try {
-                const res = await fetch("http://localhost:7070/allProducts", {
-                    method: "POST",
-                    credentials: "include",
-                });
-                const data = await res.json();
+                const data = await ApiHelper.getAllProducts();
                 setProducts(data);
             } catch (err) {
                 console.error("Failed to fetch products:", err);
