@@ -42,7 +42,7 @@ const UpdateInventoryPage = () => {
         setLoading(true);
         setSuccessMessage("");
         setUpdatedProduct(null);
-        
+
         try {
             const res = await fetch("http://localhost:7070/updateInventory", {
                 method: "POST",
