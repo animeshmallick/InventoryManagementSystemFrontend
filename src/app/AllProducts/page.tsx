@@ -5,18 +5,8 @@ import { useRouter } from "next/navigation";
 import {AnimatePresence, motion} from "framer-motion";
 import BackToDashboard from "@/components/BackToDashboard";
 import {ShoppingBag, Search, X, Trash2} from "lucide-react";
-import ApiHelper from "@/helpers/ApiHelper";
 import apiHelper from "@/helpers/ApiHelper";
-
-interface Product {
-    product_id: string;
-    productName: string;
-    productStock: number;
-    productCostPrice: number;
-    productSellingPrice: number;
-    createdBy: string;
-    lastUpdatedAt: string;
-}
+import {Product} from "@/blueprint/customBlueprints";
 
 const ShowAllProductsPage = () => {
     const router = useRouter();

@@ -1,14 +1,6 @@
 import axios from "axios";
 import API_CONFIG from "@/config/apiConfig";
-import {
-    LoginDetails,
-    LoginResponse,
-    VerifyLoginResponse,
-    LogoutResponse,
-    AddProductRequest,
-    AddProductResponse,
-    DeleteProductResponse
-} from "@/blueprint/blueprint";
+import {LoginResponse, VerifyLoginResponse, LogoutResponse, AddProductResponse, DeleteProductResponse} from "@/blueprint/blueprint";
 
 
 const api = axios.create({
@@ -19,8 +11,8 @@ const api = axios.create({
 });
 
 const ApiHelper = {
-    async loginUser(loginDetails: LoginDetails) : Promise<LoginResponse> {
-        return api.post("/login", loginDetails)
+    async loginUser(phone: number, password: string) : Promise<LoginResponse> {
+        return api.post("/login", {phone, password})
             .then(response => response.data)
             .catch(error => error.response.data);
     },
@@ -39,8 +31,13 @@ const ApiHelper = {
             .then(response => response.data)
             .catch(error => error.response.data);
     },
-    async addProduct(productData:AddProductRequest):Promise<AddProductResponse>{
-        return api.post("/addProduct", productData)
+    async addProduct(
+        productName: string,
+        productQuantity: number,
+        productCostPrice: number,
+        productSellingPrice: number
+    ):Promise<AddProductResponse>{
+        return api.post("/addProduct", {productName, productQuantity, productCostPrice, productSellingPrice})
             .then(response => response.data)
             .catch(error => error.response.data);
     },

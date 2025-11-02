@@ -3,60 +3,78 @@
 import React from "react";
 
 interface AddProductFormProps {
-    onSubmit: (data: {
-        productName: string;
-        productQuantity: number;
-        productCostPrice: number;
+    onSubmit: (
+        productName: string,
+        productQuantity: number,
+        productCostPrice: number,
         productSellingPrice: number
-    }) => void;
+    ) => void;
     onNameChange: (name: string) => void;
     loading: boolean;
-    formData: {
-        productName: string;
-        productQuantity: number;
-        productCostPrice: number;
-        productSellingPrice: number
-    };
-    setFormData: React.Dispatch<
-        React.SetStateAction<{
-            productName: string;
-            productQuantity: number;
-            productCostPrice: number;
-            productSellingPrice: number
-        }>
-    >;
+    productName: string;
+    setProductName: React.Dispatch<React.SetStateAction<string>>;
+    productQuantity: number;
+    setProductQuantity: React.Dispatch<React.SetStateAction<number>>;
+    productCostPrice: number;
+    setProductCostPrice: React.Dispatch<React.SetStateAction<number>>;
+    productSellingPrice: number;
+    setProductSellingPrice: React.Dispatch<React.SetStateAction<number>>;
+    }
 
-}
-
-const AddProductForm: React.FC<AddProductFormProps> = ({onSubmit, onNameChange, loading, formData, setFormData }) => {
+const AddProductForm: React.FC<AddProductFormProps> = ({
+   onSubmit,
+   onNameChange,
+   loading,
+    productName,
+    setProductName,
+    productQuantity,
+    setProductQuantity,
+    productCostPrice,
+    setProductCostPrice,
+    productSellingPrice,
+    setProductSellingPrice,
+}) => {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        setFormData((prev) => ({ ...prev, [name]: value }));
-
-        // Only trigger similar product search when typing product name
-        if (name === "productName") {
-            onNameChange(value);
+        switch (name) {
+            case "productName":
+                setProductName(value);
+                onNameChange(value);
+                break;
+            case "productQuantity":
+                setProductQuantity(Number(value));
+                break;
+            case "productCostPrice":
+                setProductCostPrice(Number(value));
+                break;
+            case "productSellingPrice":
+                setProductSellingPrice(Number(value));
+                break;
+            default:
+                break;
         }
     };
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        const { productName, productQuantity, productCostPrice, productSellingPrice } = formData;
 
         if (!productName || !productQuantity || !productCostPrice || !productSellingPrice) {
             alert("Please fill in all fields");
             return;
         }
 
-        onSubmit({
-            productName: productName.trim(),
-            productQuantity: Number(productQuantity),
-            productCostPrice: Number(productCostPrice),
-            productSellingPrice: Number(productSellingPrice),
-        });
+        onSubmit(
+            productName.trim(),
+            productQuantity,
+            productCostPrice,
+            productSellingPrice,
+        );
 
         // Reset form after submission
-        setFormData({ productName: "", productQuantity: 0, productCostPrice: 0, productSellingPrice: 0 });
+        setProductName("");
+        setProductQuantity(0);
+        setProductCostPrice(0);
+        setProductSellingPrice(0);
     };
 
     return (
@@ -67,7 +85,7 @@ const AddProductForm: React.FC<AddProductFormProps> = ({onSubmit, onNameChange, 
                     type="text"
                     name="productName"
                     placeholder="Enter product name"
-                    value={formData.productName}
+                    value={productName}
                     onChange={handleChange}
                     required
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 outline-none"
@@ -80,7 +98,7 @@ const AddProductForm: React.FC<AddProductFormProps> = ({onSubmit, onNameChange, 
                     type="number"
                     name="productQuantity"
                     placeholder="Enter product quantity"
-                    value={formData.productQuantity}
+                    value={productQuantity}
                     onChange={handleChange}
                     min={1}
                     required
@@ -94,7 +112,7 @@ const AddProductForm: React.FC<AddProductFormProps> = ({onSubmit, onNameChange, 
                     type="number"
                     name="productSellingPrice"
                     placeholder="Enter price"
-                    value={formData.productSellingPrice}
+                    value={productSellingPrice}
                     onChange={handleChange}
                     min={1}
                     required
@@ -108,7 +126,7 @@ const AddProductForm: React.FC<AddProductFormProps> = ({onSubmit, onNameChange, 
                     type="number"
                     name="productCostPrice"
                     placeholder="Enter price"
-                    value={formData.productCostPrice}
+                    value={productCostPrice}
                     onChange={handleChange}
                     min={1}
                     required

@@ -3,25 +3,33 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import PasswordInput from "./PasswordInput";
-import ApiHelper from "@/helpers/ApiHelper";
-import {LoginResponse} from "@/blueprint/blueprint";
 import apiHelper from "@/helpers/ApiHelper";
 
 const LoginForm = () => {
     const router = useRouter();
-    const [loginDetails, setLoginDetails] = useState({ phone: "", password: "" });
+    const [phone, setPhoneNumber] = useState("");
+    const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        const newValue = name === "phone" ? Number(value) : value;
-        setLoginDetails({ ...loginDetails, [name]: newValue });
+        switch(name) {
+            case "phone":
+                setPhoneNumber(value);
+                break;
+            case "password":
+                setPassword(value);
+                break;
+            default:
+                break;
+        }
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
-        apiHelper.loginUser(loginDetails)
+
+        apiHelper.loginUser(Number(phone), password)
             .then((result) => {
                 if (result.success)
                     router.push("/Dashboard");
@@ -50,7 +58,7 @@ const LoginForm = () => {
                         type="tel"
                         name="phone"
                         placeholder="Enter 10-digit phone number"
-                        value={loginDetails.phone}
+                        value={phone}
                         onChange={handleChange}
                         pattern="[0-9]{10}"
                         maxLength={10}
@@ -59,7 +67,7 @@ const LoginForm = () => {
                     />
                 </div>
 
-            <PasswordInput value={loginDetails.password} onChange={handleChange} />
+            <PasswordInput value={password} onChange={handleChange} />
 
             <button
                 type="submit"

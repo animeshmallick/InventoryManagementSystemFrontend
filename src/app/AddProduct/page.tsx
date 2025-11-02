@@ -6,8 +6,7 @@ import AddProductForm from "@/components/AddProductForm";
 import SuccessMessage from "@/components/SuccessMessage";
 import SimilarProducts from "@/components/SimilarProducts";
 import BackToDashboard from "@/components/BackToDashboard";
-import ApiHelper from "@/helpers/ApiHelper";
-import {Product, AddProductRequest, AddProductResponse, VerifyLoginResponse} from "@/blueprint/blueprint";
+import {Product} from "@/blueprint/customBlueprints";
 import apiHelper from "@/helpers/ApiHelper";
 
 
@@ -21,12 +20,10 @@ const AddProductPage = () => {
     //For similar products
     const [allProducts, setAllProducts] = useState<Product[]>([]);
     const [similarProducts, setSimilarProducts] = useState<Product[]>([]);
-    const [formData, setFormData] = useState({
-        productName: "",
-        productQuantity: 0,
-        productCostPrice: 0,
-        productSellingPrice: 0
-    });
+    const [productName, setProductName] = useState("");
+    const [productQuantity, setProductQuantity] = useState(0);
+    const [productCostPrice, setProductCostPrice] = useState(0);
+    const [productSellingPrice, setProductSellingPrice] = useState(0);
 
     useEffect(() => {
         apiHelper.verifyLogin()
@@ -54,23 +51,25 @@ const AddProductPage = () => {
         setSimilarProducts(matches.slice(0, 5)); // limit
     };
 
-    // Called when user clicks a similar product
-    const handleSelectProduct = (product: Product) => {
-        setFormData({
-            productName: product.productName,
-            productQuantity: product.productStock,
-            productCostPrice: product.productCostPrice,
-            productSellingPrice: product.productSellingPrice
-        });
-        setSimilarProducts([]); // hide suggestions after selection
-    };
+    // // Called when user clicks a similar product
+    // const handleSelectProduct = (product: Product) => {
+    //     setProductName(productName);
+    //     setProductQuantity(productQuantity);
+    //     setProductCostPrice(productCostPrice);
+    //     setProductSellingPrice(productSellingPrice);
+    //     setSimilarProducts([]); // hide suggestions after selection
+    // };
 
-    const handleAddProduct = async (productData: AddProductRequest) => {
+    const handleAddProduct = async (
+        productName:string,
+        productQuantity:number,
+        productCostPrice: number,
+        productSellingPrice: number ) => {
         setLoading(true);
         setSuccessMessage("");
         setAddedProduct(null);
 
-        apiHelper.addProduct(productData)
+        apiHelper.addProduct(productName, productQuantity, productCostPrice, productSellingPrice)
             .then(res => {
                 setSuccessMessage("Product successfully added!");
                 setAddedProduct(res.product);
@@ -109,14 +108,21 @@ const AddProductPage = () => {
                     onSubmit={handleAddProduct}
                     onNameChange={handleNameChange}
                     loading={loading}
-                    formData={formData}
-                    setFormData={setFormData}/>
+                    productName={productName}
+                    setProductName={setProductName}
+                    productQuantity={productQuantity}
+                    setProductQuantity={setProductQuantity}
+                    productCostPrice={productCostPrice}
+                    setProductCostPrice={setProductCostPrice}
+                    productSellingPrice={productSellingPrice}
+                    setProductSellingPrice={setProductSellingPrice}
+                />
             </div>
 
             {/*Similar products section */}
             <SimilarProducts
                 products={similarProducts}
-                onSelect={handleSelectProduct}/>
+                />
 
             {/* Back to Dashboard */}
             <BackToDashboard />

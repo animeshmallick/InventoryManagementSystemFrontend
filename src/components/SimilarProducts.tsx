@@ -3,14 +3,13 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { ShoppingBag } from "lucide-react";
-import {Product} from "@/blueprint/blueprint";
+import {Product} from "@/blueprint/customBlueprints";
 
 interface SimilarProductsProps {
     products: Product[];
-    onSelect: (product: Product) => void;
 }
 
-const SimilarProducts: React.FC<SimilarProductsProps> = ({ products, onSelect }) => {
+const SimilarProducts: React.FC<SimilarProductsProps> = ({ products}) => {
     if (!products || products.length === 0)
         return null;
 
@@ -31,7 +30,6 @@ const SimilarProducts: React.FC<SimilarProductsProps> = ({ products, onSelect })
                 {products.map((p) => (
                     <motion.div
                         key={p.product_id}
-                        onClick={() => onSelect(p)}
                         initial={{ opacity: 1, y: 15 }}
                         transition={{ duration: 0.2 }}
                         animate={{ opacity: 1, y: 0 }}
