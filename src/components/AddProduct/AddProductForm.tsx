@@ -80,7 +80,7 @@ const AddProductForm: React.FC<AddProductFormProps> = ({
     return (
         <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-                <label className="block text-gray-700 font-medium mb-2">Product Name</label>
+                <label className="block text-gray-700 font-medium">Product Name</label>
                 <input
                     type="text"
                     name="productName"
@@ -88,12 +88,12 @@ const AddProductForm: React.FC<AddProductFormProps> = ({
                     value={productName}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 outline-none"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 outline-none text-gray-950"
                 />
             </div>
 
             <div>
-                <label className="block text-gray-700 font-medium mb-2">Quantity</label>
+                <label className="block text-gray-700 font-medium">Quantity</label>
                 <input
                     type="number"
                     name="productQuantity"
@@ -102,26 +102,12 @@ const AddProductForm: React.FC<AddProductFormProps> = ({
                     onChange={handleChange}
                     min={1}
                     required
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 outline-none"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 outline-none text-gray-950"
                 />
             </div>
 
             <div>
-                <label className="block text-gray-700 font-medium mb-2">Selling Price (₹)</label>
-                <input
-                    type="number"
-                    name="productSellingPrice"
-                    placeholder="Enter price"
-                    value={productSellingPrice}
-                    onChange={handleChange}
-                    min={1}
-                    required
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 outline-none"
-                />
-            </div>
-
-            <div>
-                <label className="block text-gray-700 font-medium mb-2">Cost Price (₹)</label>
+                <label className="block text-gray-700 font-medium">Cost Price (₹)</label>
                 <input
                     type="number"
                     name="productCostPrice"
@@ -130,7 +116,20 @@ const AddProductForm: React.FC<AddProductFormProps> = ({
                     onChange={handleChange}
                     min={1}
                     required
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 outline-none"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 outline-none text-gray-950"
+                />
+            </div>
+            <div>
+                <label className="block text-gray-700 font-medium">Selling Price (₹)</label>
+                <input
+                    type="number"
+                    name="productSellingPrice"
+                    placeholder="Enter price"
+                    value={productSellingPrice}
+                    onChange={handleChange}
+                    min={1}
+                    required
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 outline-none text-gray-950"
                 />
             </div>
 
