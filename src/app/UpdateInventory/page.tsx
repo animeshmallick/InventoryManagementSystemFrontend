@@ -10,7 +10,8 @@ interface UpdatedProduct {
     product_id: string;
     productName: string;
     productStock: number;
-    productPrice: number;
+    productSellingPrice: number;
+    productCostPrice: number;
     lastUpdatedBy: string;
     lastUpdatedAt: string;
 }
@@ -36,7 +37,8 @@ const UpdateInventoryPage = () => {
     const handleUpdateInventory = async (updateData: {
         productId: string;
         productQuantity: number;
-        productPrice: number;
+        productCostPrice: number;
+        productSellingPrice: number;
         requestType: string;
     }) => {
         setLoading(true);
@@ -82,7 +84,8 @@ const UpdateInventoryPage = () => {
                         <li><strong>ID:</strong> {updatedProduct.product_id}</li>
                         <li><strong>Name:</strong> {updatedProduct.productName}</li>
                         <li><strong>Stock:</strong> {updatedProduct.productStock}</li>
-                        <li><strong>Price:</strong> ₹{updatedProduct.productPrice}</li>
+                        <li><strong>Selling Price:</strong> ₹{updatedProduct.productSellingPrice}</li>
+                        <li><strong>Cost Price:</strong> ₹{updatedProduct.productCostPrice}</li>
                         <li>
                             <strong>Last Updated At:</strong>{" "}
                             {new Date(updatedProduct.lastUpdatedAt).toLocaleString()}

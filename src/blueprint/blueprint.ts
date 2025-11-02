@@ -25,7 +25,8 @@ export interface LogoutResponse {
 export interface AddProductRequest {
     productName: string;
     productQuantity: number;
-    productPrice: number;
+    productCostPrice: number;
+    productSellingPrice: number;
 }
 export interface AddProductResponse {
     message: string;
@@ -33,7 +34,8 @@ export interface AddProductResponse {
         product_id: string;
         productName: string;
         productStock: number;
-        productPrice: number;
+        productSellingPrice: number;
+        productCostPrice: number;
         createdBy: string;
         lastUpdatedAt: string;
     };
@@ -42,12 +44,14 @@ export interface Product {
     product_id: string;
     productName: string;
     productStock: number;
-    productPrice: number;
+    productCostPrice: number;
+    productSellingPrice: number
     createdBy: string;
     lastUpdatedAt: string;
 }
 export interface SelectedProduct {
     productName: string;
     productQuantity: number;
-    productPrice: number;
+    productCostPrice: number;
+    productSellingPrice: number;
 }

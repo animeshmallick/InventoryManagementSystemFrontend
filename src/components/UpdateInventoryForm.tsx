@@ -6,7 +6,8 @@ interface UpdateInventoryFormProps {
     onSubmit: (data: {
         productId: string;
         productQuantity: number;
-        productPrice: number;
+        productCostPrice: number;
+        productSellingPrice: number;
         requestType: string;
     }) => void;
     loading: boolean;
@@ -16,7 +17,8 @@ const UpdateInventoryForm: React.FC<UpdateInventoryFormProps> = ({onSubmit,loadi
     const [formData, setFormData] = useState({
         productId: "",
         productQuantity: "",
-        productPrice: "",
+        productCostPrice: 0,
+        productSellingPrice: 0,
         requestType: "procure",
     });
 
@@ -28,8 +30,8 @@ const UpdateInventoryForm: React.FC<UpdateInventoryFormProps> = ({onSubmit,loadi
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
-        const { productId, productQuantity, productPrice, requestType } = formData;
-        if (!productId || !productQuantity || !productPrice) {
+        const { productId, productQuantity, productCostPrice, productSellingPrice, requestType } = formData;
+        if (!productId || !productQuantity || !productCostPrice || !productSellingPrice) {
             alert("Please fill all fields");
             return;
         }
@@ -37,7 +39,8 @@ const UpdateInventoryForm: React.FC<UpdateInventoryFormProps> = ({onSubmit,loadi
         onSubmit({
             productId,
             productQuantity: Number(productQuantity),
-            productPrice: Number(productPrice),
+            productSellingPrice: Number(productSellingPrice),
+            productCostPrice: Number(productCostPrice),
             requestType,
         });
 
@@ -82,13 +85,13 @@ const UpdateInventoryForm: React.FC<UpdateInventoryFormProps> = ({onSubmit,loadi
             {/* Price */}
             <div>
                 <label className="block text-gray-700 font-medium mb-2">
-                    Price (₹)
+                    Cost Price (₹)
                 </label>
                 <input
                     type="number"
-                    name="productPrice"
+                    name="productSellingPrice"
                     placeholder="Enter price"
-                    value={formData.productPrice}
+                    value={formData.productSellingPrice}
                     onChange={handleChange}
                     required
                     min={0}

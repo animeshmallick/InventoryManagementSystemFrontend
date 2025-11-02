@@ -24,7 +24,8 @@ const AddProductPage = () => {
     const [formData, setFormData] = useState({
         productName: "",
         productQuantity: 0,
-        productPrice: 0,
+        productCostPrice: 0,
+        productSellingPrice: 0
     });
 
     useEffect(() => {
@@ -58,7 +59,8 @@ const AddProductPage = () => {
         setFormData({
             productName: product.productName,
             productQuantity: product.productStock,
-            productPrice: product.productPrice,
+            productCostPrice: product.productCostPrice,
+            productSellingPrice: product.productSellingPrice
         });
         setSimilarProducts([]); // hide suggestions after selection
     };
@@ -94,7 +96,8 @@ const AddProductPage = () => {
                         <li><strong>ID:</strong> {addedProduct.product_id}</li>
                         <li><strong>Name:</strong> {addedProduct.productName}</li>
                         <li><strong>Stock:</strong> {addedProduct.productStock}</li>
-                        <li><strong>Price:</strong> ₹{addedProduct.productPrice}</li>
+                        <li><strong>Selling Price:</strong> ₹{addedProduct.productSellingPrice}</li>
+                        <li><strong>Cost Price:</strong> ₹{addedProduct.productCostPrice}</li>
                         <li><strong>Updated At:</strong> {new Date(addedProduct.lastUpdatedAt).toLocaleString("en-IN")}</li>
                     </ul>
                 </div>

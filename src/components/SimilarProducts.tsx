@@ -50,8 +50,13 @@ const SimilarProducts: React.FC<SimilarProductsProps> = ({ products, onSelect })
                         </p>
 
                         <p className="text-sm text-gray-600">
-                            <span className="font-medium text-gray-700">Price:</span>{" "}
-                            ₹{p.productPrice.toLocaleString()}
+                            <span className="font-medium text-gray-700">Cost Price:</span>{" "}
+                            ₹{p.productCostPrice.toLocaleString()}
+                        </p>
+
+                        <p className="text-sm text-gray-600">
+                            <span className="font-medium text-gray-700">Selling Price:</span>{" "}
+                            ₹{p.productSellingPrice.toLocaleString()}
                         </p>
 
                         <p className="text-sm text-gray-600">

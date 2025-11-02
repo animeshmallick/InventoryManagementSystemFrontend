@@ -12,7 +12,8 @@ interface Product {
     product_id: string;
     productName: string;
     productStock: number;
-    productPrice: number;
+    productCostPrice: number;
+    productSellingPrice: number;
     createdBy: string;
     lastUpdatedAt: string;
 }
@@ -117,8 +118,12 @@ const ShowAllProductsPage = () => {
                                         <span className="font-medium">Stock:</span> {p.productStock}
                                     </p>
                                     <p>
-                                        <span className="font-medium">Price:</span> ₹
-                                        {p.productPrice.toLocaleString()}
+                                        <span className="font-medium">Cost Price:</span> ₹
+                                        {p.productCostPrice.toLocaleString()}
+                                    </p>
+                                    <p>
+                                        <span className="font-medium">Selling Price:</span> ₹
+                                        {p.productSellingPrice.toLocaleString()}
                                     </p>
                                     <p className="text-xs text-gray-500">
                                         {new Date(p.lastUpdatedAt).toLocaleString("en-IN")}

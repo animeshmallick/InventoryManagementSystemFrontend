@@ -6,20 +6,23 @@ interface AddProductFormProps {
     onSubmit: (data: {
         productName: string;
         productQuantity: number;
-        productPrice: number;
+        productCostPrice: number;
+        productSellingPrice: number
     }) => void;
     onNameChange: (name: string) => void;
     loading: boolean;
     formData: {
         productName: string;
         productQuantity: number;
-        productPrice: number;
+        productCostPrice: number;
+        productSellingPrice: number
     };
     setFormData: React.Dispatch<
         React.SetStateAction<{
             productName: string;
             productQuantity: number;
-            productPrice: number;
+            productCostPrice: number;
+            productSellingPrice: number
         }>
     >;
 
@@ -38,9 +41,9 @@ const AddProductForm: React.FC<AddProductFormProps> = ({onSubmit, onNameChange, 
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        const { productName, productQuantity, productPrice } = formData;
+        const { productName, productQuantity, productCostPrice, productSellingPrice } = formData;
 
-        if (!productName || !productQuantity || !productPrice) {
+        if (!productName || !productQuantity || !productCostPrice || !productSellingPrice) {
             alert("Please fill in all fields");
             return;
         }
@@ -48,11 +51,12 @@ const AddProductForm: React.FC<AddProductFormProps> = ({onSubmit, onNameChange, 
         onSubmit({
             productName: productName.trim(),
             productQuantity: Number(productQuantity),
-            productPrice: Number(productPrice),
+            productCostPrice: Number(productCostPrice),
+            productSellingPrice: Number(productSellingPrice),
         });
 
         // Reset form after submission
-        setFormData({ productName: "", productQuantity: 0, productPrice: 0 });
+        setFormData({ productName: "", productQuantity: 0, productCostPrice: 0, productSellingPrice: 0 });
     };
 
     return (
@@ -85,12 +89,26 @@ const AddProductForm: React.FC<AddProductFormProps> = ({onSubmit, onNameChange, 
             </div>
 
             <div>
-                <label className="block text-gray-700 font-medium mb-2">Price (₹)</label>
+                <label className="block text-gray-700 font-medium mb-2">Selling Price (₹)</label>
                 <input
                     type="number"
-                    name="productPrice"
+                    name="productSellingPrice"
                     placeholder="Enter price"
-                    value={formData.productPrice}
+                    value={formData.productSellingPrice}
+                    onChange={handleChange}
+                    min={1}
+                    required
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 outline-none"
+                />
+            </div>
+
+            <div>
+                <label className="block text-gray-700 font-medium mb-2">Cost Price (₹)</label>
+                <input
+                    type="number"
+                    name="productCostPrice"
+                    placeholder="Enter price"
+                    value={formData.productCostPrice}
                     onChange={handleChange}
                     min={1}
                     required
