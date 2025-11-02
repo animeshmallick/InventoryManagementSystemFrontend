@@ -1,6 +1,14 @@
 import axios from "axios";
 import API_CONFIG from "@/config/apiConfig";
-import {LoginDetails, LoginResponse, VerifyLoginResponse, LogoutResponse, AddProductRequest, AddProductResponse} from "@/blueprint/blueprint";
+import {
+    LoginDetails,
+    LoginResponse,
+    VerifyLoginResponse,
+    LogoutResponse,
+    AddProductRequest,
+    AddProductResponse,
+    DeleteProductResponse
+} from "@/blueprint/blueprint";
 
 
 const api = axios.create({
@@ -36,6 +44,11 @@ const ApiHelper = {
             .then(response => response.data)
             .catch(error => error.response.data);
     },
+    async deleteProduct(productId: string):Promise<DeleteProductResponse>{
+        return api.post(`/deleteProduct/${productId}`)
+            .then(response => response.data)
+            .catch(error => error.response.data);
+    }
 
 };
 export default ApiHelper;

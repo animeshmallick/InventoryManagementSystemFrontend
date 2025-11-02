@@ -55,3 +55,7 @@ export interface SelectedProduct {
     productCostPrice: number;
     productSellingPrice: number;
 }
+export interface DeleteProductResponse {
+    message: string,
+    product: Product[]
+}

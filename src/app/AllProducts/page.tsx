@@ -2,9 +2,9 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
+import {AnimatePresence, motion} from "framer-motion";
 import BackToDashboard from "@/components/BackToDashboard";
-import { ShoppingBag, Search, X } from "lucide-react";
+import {ShoppingBag, Search, X, Trash2} from "lucide-react";
 import ApiHelper from "@/helpers/ApiHelper";
 import apiHelper from "@/helpers/ApiHelper";
 
@@ -39,6 +39,22 @@ const ShowAllProductsPage = () => {
     const filteredProducts = products.filter((p) =>
         p.productName.toLowerCase().includes(searchQuery.toLowerCase())
     );
+
+    const handleDelete = async (productId: string) => {
+        try {
+            const confirmed = confirm("Are you sure you want to delete this product?");
+            if (!confirmed) return;
+            apiHelper.deleteProduct(productId)
+                .then(res => {
+                    if (res.message.includes("deleted successfully"))
+                        setProducts(products.filter(p => p.product_id !== productId))
+                })
+                .catch(err => console.log(err))
+        } catch (err) {
+            console.error(err);
+            alert("Failed to delete product");
+        }
+    }
 
     return (
         <div className="flex flex-col items-center justify-start min-h-screen bg-gradient-to-br from-blue-50 to-blue-200 p-6">
@@ -88,49 +104,61 @@ const ShowAllProductsPage = () => {
                     </p>
                 ) : (
                     <div className="space-y-3">
-                        {filteredProducts.map((p, index) => (
-                            <motion.div
-                                key={p.product_id}
-                                initial={{ opacity: 0, y: 10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: index * 0.03 }}
-                                whileHover={{ scale: 1.01 }}
-                                className="flex items-center justify-between bg-white border border-gray-200 shadow-sm rounded-xl px-2 py-1 hover:shadow-md transition-all"
-                            >
-                                {/* Left section - serial + product name */}
-                                <div className="flex items-center gap-4">
-                                    <div className="w-6 h-6 flex items-center justify-center text-sm font-semibold bg-indigo-100 text-indigo-600 rounded-full">
-                                        {index + 1}
+                        <AnimatePresence>
+                            {filteredProducts.map((p, index) => (
+                                <motion.div
+                                    key={p.product_id}
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -20, scale: 0.95 }}
+                                    transition={{ duration: 0.4, ease: "easeOut" }}
+                                    whileHover={{ scale: 1.01 }}
+                                    className="flex items-center justify-between bg-white border border-gray-200 shadow-sm rounded-xl px-3 py-2 hover:shadow-md transition-all"
+                                >
+                                    {/* Left section - serial + product name */}
+                                    <div className="flex items-center gap-4">
+                                        <div className="w-6 h-6 flex items-center justify-center text-sm font-semibold bg-indigo-100 text-indigo-600 rounded-full">
+                                            {index + 1}
+                                        </div>
+                                        <div>
+                                            <p className="font-semibold text-gray-800 text-base">
+                                                {p.productName}
+                                            </p>
+                                            <p className="text-xs text-gray-500">
+                                                ID: {p.product_id}
+                                            </p>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <p className="font-semibold text-gray-800 text-base">
-                                            {p.productName}
+
+                                    {/* Right section - details + delete */}
+                                    <div className="flex flex-col text-right text-sm text-gray-700">
+                                        <p>
+                                            <span className="font-medium">Stock:</span> {p.productStock}
+                                        </p>
+                                        <p>
+                                            <span className="font-medium">Cost Price:</span> ₹
+                                            {p.productCostPrice.toLocaleString()}
+                                        </p>
+                                        <p>
+                                            <span className="font-medium">Selling Price:</span> ₹
+                                            {p.productSellingPrice.toLocaleString()}
                                         </p>
                                         <p className="text-xs text-gray-500">
-                                            ID: {p.product_id}
+                                            {new Date(p.lastUpdatedAt).toLocaleString("en-IN")}
                                         </p>
-                                    </div>
-                                </div>
 
-                                {/* Right section - details */}
-                                <div className="flex flex-col text-right text-sm text-gray-700">
-                                    <p>
-                                        <span className="font-medium">Stock:</span> {p.productStock}
-                                    </p>
-                                    <p>
-                                        <span className="font-medium">Cost Price:</span> ₹
-                                        {p.productCostPrice.toLocaleString()}
-                                    </p>
-                                    <p>
-                                        <span className="font-medium">Selling Price:</span> ₹
-                                        {p.productSellingPrice.toLocaleString()}
-                                    </p>
-                                    <p className="text-xs text-gray-500">
-                                        {new Date(p.lastUpdatedAt).toLocaleString("en-IN")}
-                                    </p>
-                                </div>
-                            </motion.div>
-                        ))}
+                                        {/* 🗑️ Delete Button */}
+                                        <motion.button
+                                            onClick={() => handleDelete(p.product_id)}
+                                            whileTap={{ scale: 0.9 }}
+                                            className="mt-2 self-end flex items-center gap-1 text-red-600 hover:text-red-700 text-xs font-semibold transition-all"
+                                        >
+                                            <Trash2 size={14} /> Delete
+                                        </motion.button>
+                                    </div>
+                                </motion.div>
+                            ))}
+                        </AnimatePresence>
                     </div>
                 )}
             </div>
