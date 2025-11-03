@@ -52,9 +52,6 @@ const AddProductPage = () => {
         }
         const matches = fuse.search(typedName).map(result => result.item);
         setSimilarProducts(matches.slice(0, 5));
-        // const matches = allProducts.filter((p) =>
-        //     p.productName.toLowerCase().includes(typedName.toLowerCase()));
-        // setSimilarProducts(matches.slice(0, 5)); // limit
     };
 
     const handleAddProduct = async (
