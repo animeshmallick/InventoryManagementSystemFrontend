@@ -112,7 +112,7 @@ const ShowAllProductsPage = () => {
                         <button
                             key={cat}
                             onClick={() => setSelectedCategory(cat)}
-                            className={`px-3 py-1 rounded ${selectedCategory === cat ? "bg-blue-600 text-white" : "bg-gray-200"}`}
+                            className={`px-3 py-1 rounded text-black ${selectedCategory === cat ? "bg-blue-600" : "bg-gray-200"}`}
                         >
                             {cat}
                         </button>
