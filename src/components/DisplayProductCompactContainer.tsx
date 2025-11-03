@@ -19,17 +19,17 @@ const DisplayProductCompactContainer : React.FC<DisplayProductCompactProps> = ({
             className="px-3 py-0.5 rounded-2xl border transition-all cursor-pointer group relative overflow-hidden border-gray-200 bg-white shadow-sm hover:shadow-md hover:border-indigo-300 hover:bg-indigo-50"
 
         >
-            <p className="font-bold text-gray-800 text-xl">{product.productName}</p>
-            <div className="flex justify-between">
-                <div className="text-sm text-gray-600 mb-0.5">
+            <p className="font-bold text-gray-800 text-lg">{product.productName}</p>
+
+            <div className="flex justify-between" >
+                <p className="text-sm text-gray-600">
+                    <span className="font-medium text-gray-700">Category :</span>{" "}
+                    <strong>{product.productCategory}</strong>
+                </p>
+                <p className="text-sm text-gray-600 mb-0.5">
                     <span className="font-medium text-gray-700">Stock:</span>{" "}
                     <strong>{product.productQuantity}</strong>
-                </div>
-
-                <div className="text-sm text-gray-600 mb-0.5">
-                    <span className="font-medium text-gray-700">Category:</span>{" "}
-                    <strong>{product.productCategory}</strong>
-                </div>
+                </p>
             </div>
 
             <div className="flex justify-between">
