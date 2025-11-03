@@ -3,9 +3,9 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import Fuse from "fuse.js";
-import {AnimatePresence, motion} from "framer-motion";
+import {AnimatePresence} from "framer-motion";
 import BackToDashboard from "@/components/BackToDashboard";
-import {ShoppingBag, Search, X, Trash2} from "lucide-react";
+import {ShoppingBag, Search, X} from "lucide-react";
 import apiHelper from "@/helpers/ApiHelper";
 import {Product} from "@/blueprint/customBlueprints";
 import LoadingScreen from "@/components/LoadingScreen";
@@ -14,15 +14,31 @@ import DisplayProductCompactContainer from "@/components/DisplayProductCompactCo
 const ShowAllProductsPage = () => {
     const router = useRouter();
     const [loading, setLoading] = useState(true);
+    const [distinctCategory, setDistinctCategory] = useState<string[]>([]);
+    const [selectedCategory, setSelectedCategory] = useState<string>("All");
     const [products, setProducts] = useState<Product[]>([]);
     const [searchQuery, setSearchQuery] = useState("");
+
+    const fetchDistinctCategories = (products: Product[]): string[] => {
+        const distinctCategory: string[] = [];
+        products.map(p => {
+            if (!distinctCategory.includes(p.productCategory))
+                distinctCategory.push(p.productCategory);
+        });
+        distinctCategory.sort((a, b) => (a > b ? 1 : -1));
+        distinctCategory.unshift("All");
+        return distinctCategory;
+    }
 
     useEffect(() => {
         apiHelper.verifyLogin()
             .then(result => {
                 if (!result.loggedIn)
                     return router.push("/Login");
-                apiHelper.getAllProducts().then(data => setProducts(data))
+                apiHelper.getAllProducts().then(data => {
+                    setProducts(data);
+                    setDistinctCategory(fetchDistinctCategories(data));
+                });
             })
             .catch(err => console.log(err))
             .finally(() => setLoading(false));
@@ -62,10 +78,10 @@ const ShowAllProductsPage = () => {
     }
 
     return (
-        <div className="flex flex-col items-center justify-start min-h-screen bg-gradient-to-br from-blue-50 to-blue-200 p-2">
-            <div className="bg-white shadow-lg rounded-2xl p-6 w-full max-w-5xl">
+        <div className="flex flex-col items-center justify-start min-h-screen bg-gradient-to-br from-blue-50 to-blue-200 p-1.5">
+            <div className="bg-white shadow-lg rounded-2xl p-1.5 w-full max-w-5xl">
                 {/* Header */}
-                <div className="bg-yellow-100 border border-gray-200 rounded-xl p-2 mb-3 flex items-center justify-between">
+                <div className="bg-yellow-100 border border-gray-200 rounded-xl p-1.5 mb-1 flex items-center justify-between">
                     <div className="flex items-center gap-2">
                         <div className="w-1.5 h-6 bg-indigo-500 rounded-full" />
                         <h3 className="text-lg md:text-xl font-semibold text-gray-800 flex items-center gap-2">
@@ -76,7 +92,7 @@ const ShowAllProductsPage = () => {
                 </div>
 
                 {/*Search Box */}
-                <div className="relative mb-3">
+                <div className="relative mb-2">
                     <input
                         type="text"
                         placeholder="Search products by name..."
@@ -94,6 +110,17 @@ const ShowAllProductsPage = () => {
                         </button>
                     )}
                 </div>
+                <div className="flex flex-wrap gap-2 mb-4">
+                    {distinctCategory.map(cat => (
+                        <button
+                            key={cat}
+                            onClick={() => setSelectedCategory(cat)}
+                            className={`px-3 py-1 rounded ${selectedCategory === cat ? "bg-blue-600 text-white" : "bg-gray-200"}`}
+                        >
+                            {cat}
+                        </button>
+                    ))}
+                </div>
 
                 {/* LoadingScreen / Empty states */}
                 {loading ? (
@@ -107,7 +134,9 @@ const ShowAllProductsPage = () => {
                 ) : (
                     <div className="space-y-3">
                         <AnimatePresence>
-                            {filteredProducts.map((p) => (
+                            {filteredProducts
+                                .filter(product => product.productCategory === selectedCategory || selectedCategory === "All")
+                                .map((p) => (
                                 <DisplayProductCompactContainer
                                     product={p}
                                     key={p.product_id}
