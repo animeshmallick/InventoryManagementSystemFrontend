@@ -33,11 +33,11 @@ const ApiHelper = {
     },
     async addProduct(
         productName: string,
-        productQuantity: number,
+        productCategory: string,
         productCostPrice: number,
         productSellingPrice: number
     ):Promise<AddProductResponse>{
-        return api.post("/addProduct", {productName, productQuantity, productCostPrice, productSellingPrice})
+        return api.post("/addProduct", {productName, productCategory, productCostPrice, productSellingPrice})
             .then(response => response.data)
             .catch(error => error.response.data);
     },

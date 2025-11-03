@@ -21,9 +21,10 @@ const AddProductPage = () => {
     const [allProducts, setAllProducts] = useState<Product[]>([]);
     const [similarProducts, setSimilarProducts] = useState<Product[]>([]);
     const [productName, setProductName] = useState("");
-    const [productQuantity, setProductQuantity] = useState(0);
+    const [productCategory, setProductCategory] = useState("");
     const [productCostPrice, setProductCostPrice] = useState(0);
     const [productSellingPrice, setProductSellingPrice] = useState(0);
+    const [categories, setCategories] = useState<string[]>([]);
 
     useEffect(() => {
         apiHelper.verifyLogin()
@@ -32,6 +33,10 @@ const AddProductPage = () => {
                     return router.push("/Login");
                 apiHelper.getAllProducts().then(data => {
                     setAllProducts(data);
+                    const uniqueCategories = Array.from(
+                        new Set(data.map((p: Product) => p.productCategory).filter(Boolean)),
+                    ) as string[];
+                    setCategories(uniqueCategories);
                 })
             })
             .catch(err => router.push("/Login"))
@@ -39,8 +44,8 @@ const AddProductPage = () => {
     }, [router]);
 
     const fuse = new Fuse(allProducts,{
-        keys: ["productName"],
-        threshold: 0.4,
+        keys: ["productName", "productCategory"],
+        threshold: 0.3,
         includeScore: true,
     });
 
@@ -55,21 +60,37 @@ const AddProductPage = () => {
     };
 
     const handleAddProduct = async (
-        productName:string, productQuantity:number, productCostPrice: number,
+        productName:string, productCategory:string, productCostPrice: number,
         productSellingPrice: number ) => {
-
         setLoading(true);
 
-        apiHelper.addProduct(productName, productQuantity, productCostPrice, productSellingPrice)
-            .then(res => {
-                setSuccessMessage("Product successfully added!");
-                setAddedProduct(res.product);
-            })
-            .catch(err => {
-                setSuccessMessage("Failed to add product");
-                setAddedProduct(null);
-            })
-            .finally(() => setLoading(false));
+        const duplicate = similarProducts.some(
+            (r) =>
+                r.productName.toLowerCase() === productName.trim().toLowerCase() &&
+                r.productCategory.toLowerCase() === productCategory.trim().toLowerCase()
+        );
+        if (duplicate) {
+            setSuccessMessage("Product already exists");
+            setLoading(false);}
+        else {
+            apiHelper.addProduct(productName, productCategory, productCostPrice, productSellingPrice)
+                .then(res => {
+                    if (res.product) {
+                        setSuccessMessage("Product successfully added!");
+                        setAddedProduct(res.product);
+                        setSimilarProducts([]);
+                    } else {
+                        setSuccessMessage("Product not added");
+                        setAddedProduct(null);
+                        setSimilarProducts([]);
+                    }
+                })
+                .catch(err => {
+                    setSuccessMessage("Failed to add product");
+                    setAddedProduct(null);
+                })
+                .finally(() => setLoading(false));
+        }
     };
 
     if (loading) return (<LoadingScreen />);
@@ -89,12 +110,13 @@ const AddProductPage = () => {
                     loading={loading}
                     productName={productName}
                     setProductName={setProductName}
-                    productQuantity={productQuantity}
-                    setProductQuantity={setProductQuantity}
+                    productCategory={productCategory}
+                    setProductCategory={setProductCategory}
                     productCostPrice={productCostPrice}
                     setProductCostPrice={setProductCostPrice}
                     productSellingPrice={productSellingPrice}
                     setProductSellingPrice={setProductSellingPrice}
+                    categories={categories}
                 />
             </div>
 

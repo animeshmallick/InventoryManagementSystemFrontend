@@ -57,9 +57,6 @@ const ShowAllProductsPage = () => {
         if (!searchQuery.trim()) return products;     // same as before if empty
         return fuse.search(searchQuery).map(result => result.item);
     }, [fuse, products, searchQuery]);
-    // const filteredProducts = products.filter((p) =>
-    //     p.productName.toLowerCase().includes(searchQuery.toLowerCase())
-    // );
 
     const handleDelete = async (productId: string) => {
         try {

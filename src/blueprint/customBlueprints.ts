@@ -9,7 +9,8 @@ export interface LoginDetails {
 export interface Product {
     product_id: string;
     productName: string;
-    productStock: number;
+    productCategory: string;
+    productQuantity: number;
     productCostPrice: number;
     productSellingPrice: number
     createdBy: string;
