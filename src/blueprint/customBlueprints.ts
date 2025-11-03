@@ -15,5 +15,4 @@ export interface Product {
     productSellingPrice: number
     createdBy: string;
     lastUpdatedAt: string;
-    productCategory: string;
 }
