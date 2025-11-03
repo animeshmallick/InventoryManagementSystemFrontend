@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
+import Fuse from "fuse.js";
 import {AnimatePresence, motion} from "framer-motion";
 import BackToDashboard from "@/components/BackToDashboard";
 import {ShoppingBag, Search, X, Trash2} from "lucide-react";
@@ -28,9 +29,21 @@ const ShowAllProductsPage = () => {
     }, [router]);
 
     // Filtered list based on search
-    const filteredProducts = products.filter((p) =>
-        p.productName.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    const fuse = useMemo(() => {
+        return new Fuse(products, {
+            keys: ["productName"],
+            threshold: 0.4,
+            includeScore: true,
+        });
+    }, [products]);
+
+    const filteredProducts = useMemo(() => {
+        if (!searchQuery.trim()) return products;     // same as before if empty
+        return fuse.search(searchQuery).map(result => result.item);
+    }, [fuse, products, searchQuery]);
+    // const filteredProducts = products.filter((p) =>
+    //     p.productName.toLowerCase().includes(searchQuery.toLowerCase())
+    // );
 
     const handleDelete = async (productId: string) => {
         try {
