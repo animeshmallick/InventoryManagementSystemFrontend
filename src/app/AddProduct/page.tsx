@@ -102,6 +102,9 @@ const AddProductPage = () => {
             {/* Inline success or error message */}
             <SuccessMessage message={successMessage} product={addedProduct} />
 
+            {/*Similar products section */}
+            <SimilarProducts products={similarProducts} />
+
              {/*AddProduct form */}
             <div className="bg-white shadow-lg rounded-2xl p-4 w-full max-w-lg">
                 <AddProductForm
@@ -119,9 +122,6 @@ const AddProductPage = () => {
                     categories={categories}
                 />
             </div>
-
-            {/*Similar products section */}
-            <SimilarProducts products={similarProducts} />
 
             {/* Back to Dashboard */}
             <BackToDashboard />
