@@ -170,7 +170,7 @@ const AddProductForm: React.FC<AddProductFormProps> = ({
             <div>
                 <label className="block text-gray-700 font-medium">Cost Price (₹)</label>
                 <input
-                    type="number"
+                    type="text"
                     name="productCostPrice"
                     placeholder="Enter price"
                     value={productCostPrice}
@@ -183,7 +183,7 @@ const AddProductForm: React.FC<AddProductFormProps> = ({
             <div>
                 <label className="block text-gray-700 font-medium">Selling Price (₹)</label>
                 <input
-                    type="number"
+                    type="text"
                     name="productSellingPrice"
                     placeholder="Enter price"
                     value={productSellingPrice}

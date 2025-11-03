@@ -22,7 +22,7 @@ const SuccessMessage: React.FC<SuccessMessageProps> = ({ message, product }) => 
                         </div>
                         <div className="flex justify-around items-center">
                             <div><strong>ID:</strong> {product.product_id} </div>
-                            <div><strong>Stock:</strong> {product.productQuantity}</div>
+                            <div><strong>Category:</strong> {product.productCategory}</div>
                         </div>
                         <div className="flex justify-around items-center">
                             <div><strong>Selling Price:</strong> ₹{product.productSellingPrice} </div>
