@@ -40,7 +40,7 @@ const AddProductForm: React.FC<AddProductFormProps> = ({
 }) => {
     const [filteredCategories, setFilteredCategories] = useState<string[]>([]);
     const [showDropdown, setShowDropdown] = useState(false);
-    const dropdownRef = useRef<HTMLDivElement>(null);
+    const dropdownRef = useRef<HTMLUListElement>(null);
     const fuse = new Fuse(categories,{
         threshold: 0.5,
         includeScore: true,
@@ -126,31 +126,33 @@ const AddProductForm: React.FC<AddProductFormProps> = ({
                 />
             </div>
 
-            <div className="relative">
+            <div>
                 <label className="block text-gray-700 font-medium">Product Category</label>
-                <input
-                    type="text"
-                    name="productCategory"
-                    placeholder="Enter product category"
-                    value={productCategory}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 outline-none text-gray-950"
-                    autoComplete="off"
-                />
-                {/* 🟩 Dropdown toggle icon */}
-                <button
-                    type="button"
-                    onClick={() => setShowDropdown((prev) => !prev)}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
-                    tabIndex={-1} // prevent losing focus when clicking icon
-                >
-                    <ChevronDown className={`w-5 h-5 transition-transform ${showDropdown ? "rotate-180" : ""}`} />
-                </button>
+                <div className="relative flex items-center">
+                    <input
+                        type="text"
+                        name="productCategory"
+                        placeholder="Enter product category"
+                        value={productCategory}
+                        onChange={handleChange}
+                        required
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 outline-none text-gray-950"
+                        autoComplete="off"
+                    />
+                    {/* 🟩 Dropdown toggle icon */}
+                    <button
+                        type="button"
+                        onClick={() => setShowDropdown((prev) => !prev)}
+                        className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center justify-center text-gray-500 hover:text-gray-700"
+                        tabIndex={-1} // prevent losing focus when clicking icon
+                    >
+                        <ChevronDown className={`w-5 h-5 transition-transform ${showDropdown ? "rotate-180" : ""}`} />
+                    </button>
+                </div>
 
             {/* 🟩 Dropdown List */}
             {showDropdown && filteredCategories.length > 0 && (
-                <ul className="absolute z-10 w-full bg-white border border-gray-300 rounded-lg mt-1 max-h-40 overflow-y-auto shadow-md">
+                <ul className="absolute z-10 w-full bg-white border border-gray-300 rounded-lg mt-1 max-h-40 overflow-y-auto shadow-md" ref={dropdownRef}>
                     {filteredCategories.map((category, index) => (
                         <li
                             key={index}

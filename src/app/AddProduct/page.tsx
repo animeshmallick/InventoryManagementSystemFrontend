@@ -96,7 +96,7 @@ const AddProductPage = () => {
     if (loading) return (<LoadingScreen />);
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-200 p-2">
+        <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 to-blue-200 p-2">
             <h1 className="text-3xl font-bold text-gray-800 mb-2">Add New Product</h1>
 
             {/* Inline success or error message */}
