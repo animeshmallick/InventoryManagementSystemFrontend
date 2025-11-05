@@ -17,7 +17,7 @@ const PasswordInput = ({ value, onChange }: { value: string; onChange: any }) =>
                 onChange={onChange}
                 placeholder="Enter your password"
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 outline-none"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 outline-none text-gray-950"
             />
             <button
                 type="button"

@@ -19,7 +19,7 @@ const ShowAllProductsPage = () => {
     const [selectedCategory, setSelectedCategory] = useState<string>("All");
     const [products, setProducts] = useState<Product[]>([]);
     const [searchQuery, setSearchQuery] = useState("");
-    const [admin, setAdmin] = useState(true);
+    const [admin, setAdmin] = useState(false);
 
     const fetchDistinctCategories = (products: Product[]): string[] => {
         const distinctCategory: string[] = [];

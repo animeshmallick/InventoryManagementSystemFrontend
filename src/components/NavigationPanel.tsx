@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { Menu, ArrowLeft, LayoutDashboard, PlusSquare, Pencil, Boxes, LogOut } from "lucide-react";
+import { Menu, ArrowLeft } from "lucide-react";
 import apiHelper from "@/helpers/ApiHelper";
 
 interface NavigationPanelProps {
