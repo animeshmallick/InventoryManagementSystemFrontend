@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import LoadingScreen from "@/components/LoadingScreen";
 import apiHelper from "@/helpers/ApiHelper";
+import NavigationPanel from "@/components/NavigationPanel";
 
 const DashboardPage = () => {
     const router = useRouter();
@@ -13,7 +14,6 @@ const DashboardPage = () => {
     useEffect(() => {
         apiHelper.verifyLogin()
             .then(res => {
-                console.log(res);
                 if (!res.loggedIn)
                     return router.push("/Login");
                 if (res.user.userRole === "admin")
@@ -44,6 +44,7 @@ const DashboardPage = () => {
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 to-blue-200 p-6">
+            <NavigationPanel admin={admin}/>
             <h1 className="text-4xl font-bold text-gray-800 mb-10 text-center">
                 Welcome to the Dashboard
             </h1>

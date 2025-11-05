@@ -4,6 +4,7 @@ import React, { useEffect, useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import Fuse from "fuse.js";
 import {AnimatePresence} from "framer-motion";
+import NavigationPanel from "@/components/NavigationPanel";
 import BackToDashboard from "@/components/BackToDashboard";
 import {ShoppingBag, Search, X} from "lucide-react";
 import apiHelper from "@/helpers/ApiHelper";
@@ -18,6 +19,7 @@ const ShowAllProductsPage = () => {
     const [selectedCategory, setSelectedCategory] = useState<string>("All");
     const [products, setProducts] = useState<Product[]>([]);
     const [searchQuery, setSearchQuery] = useState("");
+    const [admin, setAdmin] = useState(true);
 
     const fetchDistinctCategories = (products: Product[]): string[] => {
         const distinctCategory: string[] = [];
@@ -35,6 +37,8 @@ const ShowAllProductsPage = () => {
             .then(result => {
                 if (!result.loggedIn)
                     return router.push("/Login");
+                if(result.user.userRole === "admin")
+                    setAdmin(true);
                 apiHelper.getAllProducts().then(data => {
                     setProducts(data);
                     setDistinctCategory(fetchDistinctCategories(data));
@@ -75,7 +79,8 @@ const ShowAllProductsPage = () => {
     }
 
     return (
-        <div className="flex flex-col items-center justify-start min-h-screen bg-gradient-to-br from-blue-50 to-blue-200 p-1.5">
+        <div className="flex flex-col items-center justify-start min-h-screen bg-gradient-to-br from-blue-50 to-blue-200 p-1.5 pt-16 sm:pt-20">
+            <NavigationPanel admin={admin} />
             <div className="bg-white shadow-lg rounded-2xl p-1.5 w-full max-w-5xl">
                 {/* Header */}
                 <div className="bg-yellow-100 border border-gray-200 rounded-xl p-1.5 mb-1 flex items-center justify-between">
@@ -87,7 +92,6 @@ const ShowAllProductsPage = () => {
                         </h3>
                     </div>
                 </div>
-
                 {/*Search Box */}
                 <div className="relative mb-2">
                     <input

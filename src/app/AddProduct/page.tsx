@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Fuse from "fuse.js";
 import { useRouter } from "next/navigation";
+import NavigationPanel from "@/components/NavigationPanel";
 import AddProductForm from "@/components/AddProduct/AddProductForm";
 import SuccessMessage from "@/components/AddProduct/SuccessMessage";
 import SimilarProducts from "@/components/SimilarProducts";
@@ -25,12 +26,14 @@ const AddProductPage = () => {
     const [productCostPrice, setProductCostPrice] = useState(0);
     const [productSellingPrice, setProductSellingPrice] = useState(0);
     const [categories, setCategories] = useState<string[]>([]);
+    const [admin, setAdmin] = useState(false);
 
     useEffect(() => {
         apiHelper.verifyLogin()
             .then(res => {
                 if (!res.loggedIn || res.user?.userRole !== "admin")
                     return router.push("/Login");
+                setAdmin(true);
                 apiHelper.getAllProducts().then(data => {
                     setAllProducts(data);
                     const uniqueCategories = Array.from(
@@ -97,6 +100,7 @@ const AddProductPage = () => {
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 to-blue-200 p-2">
+            <NavigationPanel admin={admin}/>
             <h1 className="text-3xl font-bold text-gray-800 mb-2">Add New Product</h1>
 
             {/* Inline success or error message */}
