@@ -10,7 +10,7 @@ export interface Product {
     product_id: string;
     productName: string;
     productCategory: string;
-    productQuantity: number;
+    productStock: number;
     productCostPrice: number;
     productSellingPrice: number
     createdBy: string;

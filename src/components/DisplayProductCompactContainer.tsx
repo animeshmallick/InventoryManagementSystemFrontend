@@ -28,7 +28,7 @@ const DisplayProductCompactContainer : React.FC<DisplayProductCompactProps> = ({
                 </p>
                 <p className="text-sm text-gray-600 mb-0.5">
                     <span className="font-medium text-gray-700">Stock:</span>{" "}
-                    <strong>{product.productQuantity}</strong>
+                    <strong>{product.productStock}</strong>
                 </p>
             </div>
 
