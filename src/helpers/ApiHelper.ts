@@ -1,6 +1,6 @@
 import axios from "axios";
 import API_CONFIG from "@/config/apiConfig";
-import {LoginResponse, VerifyLoginResponse, LogoutResponse, AddProductResponse, DeleteProductResponse} from "@/blueprint/blueprint";
+import {LoginResponse, VerifyLoginResponse, LogoutResponse, AddProductResponse, DeleteProductResponse, UpdateInventoryResponse} from "@/blueprint/blueprint";
 
 
 const api = axios.create({
@@ -45,6 +45,16 @@ const ApiHelper = {
         return api.post(`/deleteProduct/${productId}`)
             .then(response => response.data)
             .catch(error => error.response.data);
+    },
+    async updateInventory(
+        productId: string,
+        productQuantity: number,
+        requestType: string,
+        unitPrice: number
+    ): Promise<UpdateInventoryResponse> {
+        return api.post("/updateInventory", {productId, productQuantity, unitPrice, requestType})
+        .then(response => response.data)
+        .catch(error => error.response.data);
     }
 
 };

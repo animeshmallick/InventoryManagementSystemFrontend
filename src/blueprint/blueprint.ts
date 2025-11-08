@@ -18,7 +18,10 @@ export interface AddProductResponse {
     product: Product;
 }
 
-
+export interface UpdateInventoryResponse {
+    message: string;
+    product: Product;
+}
 export interface SelectedProduct {
     productName: string;
     productQuantity: number;

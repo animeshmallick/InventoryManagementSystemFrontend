@@ -17,18 +17,19 @@ const SuccessMessage: React.FC<SuccessMessageProps> = ({ message, product }) => 
             {product && (
                 <div className="bg-white shadow-md rounded-xl p-2 w-full max-w-lg border border-gray-200">
                     <div className="text-gray-700">
-                        <div className="font-bold flex justify-around items-center">
+                        <div className="flex flex-wrap justify-between mb-2 text-sm sm:text-base">
+                            <div><strong>ID:</strong> {product.product_id} </div>
                             <div><strong>Name:</strong> {product.productName} </div>
                         </div>
-                        <div className="flex justify-around items-center">
-                            <div><strong>ID:</strong> {product.product_id} </div>
+                        <div className="flex flex-wrap justify-between mb-2 text-sm sm:text-base">
                             <div><strong>Category:</strong> {product.productCategory}</div>
+                            <div><strong>Stock:</strong> {product.productStock}</div>
                         </div>
-                        <div className="flex justify-around items-center">
+                        <div className="flex flex-wrap justify-between mb-2 text-sm sm:text-base">
                             <div><strong>Cost Price:</strong> ₹{product.productCostPrice}</div>
                             <div><strong>Selling Price:</strong> ₹{product.productSellingPrice} </div>
                         </div>
-                        <div><strong>Updated At:</strong> {new Date(product.lastUpdatedAt).toLocaleString("en-IN")}</div>
+                        <div className="text-sm sm:text-base text-gray-700"><strong>Updated At:</strong> {new Date(product.lastUpdatedAt).toLocaleString("en-IN")}</div>
                     </div>
                 </div>
             )}
