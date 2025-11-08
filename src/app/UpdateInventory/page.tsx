@@ -108,7 +108,7 @@ const UpdateInventoryPage = () => {
             {/* Search Box */}
             <div className=" bg-white shadow-lg rounded-2xl p-4 w-full max-w-lg mb-4">
                 <div className="flex items-center">
-                    <Search className="h-5 w-5 text-gray-500 absolute ml-3 pointer-events-none" />
+                    <Search className="h-5 w-5 text-gray-950 absolute ml-3 pointer-events-none" />
                     <input
                         type="text"
                         placeholder="Search product by name..."
@@ -145,7 +145,7 @@ const UpdateInventoryPage = () => {
                             type="text"
                             value={selectedProduct.product_id}
                             disabled
-                            className="w-full p-2 border rounded-lg bg-gray-100"
+                            className="w-full p-2 border rounded-lg bg-gray-100 text-gray-950"
                         />
                     </div>
 
@@ -157,7 +157,7 @@ const UpdateInventoryPage = () => {
                             type="text"
                             value={selectedProduct.productName}
                             disabled
-                            className="w-full p-2 border rounded-lg bg-gray-100"
+                            className="w-full p-2 border rounded-lg bg-gray-100 text-gray-950"
                         />
                     </div>
 
@@ -169,7 +169,7 @@ const UpdateInventoryPage = () => {
                             type="number"
                             value={selectedProduct.productStock}
                             disabled
-                            className="w-full p-2 border rounded-lg bg-gray-100"
+                            className="w-full p-2 border rounded-lg bg-gray-100 text-gray-950"
                         />
                     </div>
 
@@ -179,7 +179,7 @@ const UpdateInventoryPage = () => {
                             Request Type
                         </label>
                         <div className="flex gap-4">
-                            <label className="flex items-center gap-2">
+                            <label className="flex items-center gap-2 text-gray-950">
                                 <input
                                     type="radio"
                                     name="requestType"
@@ -189,7 +189,7 @@ const UpdateInventoryPage = () => {
                                 />
                                 Procure
                             </label>
-                            <label className="flex items-center gap-2">
+                            <label className="flex items-center gap-2 text-gray-950">
                                 <input
                                     type="radio"
                                     name="requestType"
@@ -209,7 +209,7 @@ const UpdateInventoryPage = () => {
                         </label>
                         <input
                             type="number"
-                            className="w-full p-2 border rounded-lg"
+                            className="w-full p-2 border rounded-lg text-gray-950"
                             value={quantity}
                             onChange={(e) => setQuantity(Number(e.target.value))}
                         />
@@ -222,7 +222,7 @@ const UpdateInventoryPage = () => {
                         </label>
                         <input
                             type="number"
-                            className="w-full p-2 border rounded-lg"
+                            className="w-full p-2 border rounded-lg text-gray-950"
                             value={unitPrice}
                             onChange={(e) => setUnitPrice(Number(e.target.value))}
                         />
