@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { Menu, ArrowLeft } from "lucide-react";
+import { Menu, ArrowRight } from "lucide-react";
 import apiHelper from "@/helpers/ApiHelper";
 
 interface NavigationPanelProps {
@@ -42,26 +42,27 @@ const NavigationPanel: React.FC<NavigationPanelProps> = ({ admin }) => {
     return (
         <>
             <header
-                className="fixed top-0 left-0 w-full flex items-center justify-between
+                className="fixed top-0 right-0 w-full flex items-center justify-between
                 bg-gradient-to-r from-blue-600 to-indigo-700 text-white px-4 sm:px-6 py-3 shadow-md z-50"
             >
+                <h1 className="text-lg sm:text-2xl md:text-3xl font-extrabold tracking-wide text-center flex-1 mx-3 sm:mx-6 truncate">
+                    Naseem Electricals
+                </h1>
                 {/* Hamburger Icon */}
                     <button
                         onClick={() => setIsOpen(true)}
                         className="flex items-center justify-center w-10 h-10 rounded-md
                         bg-white/20 hover:bg-white/30 transition text-blue-100 hover:text-white"
                     >
-                        {isOpen ? <ArrowLeft size={26} /> : <Menu size={26} />}
+                        {isOpen ? <ArrowRight size={26} /> : <Menu size={26} />}
                     </button>
-                <h1 className="text-lg sm:text-2xl md:text-3xl font-extrabold tracking-wide text-center flex-1 mx-3 sm:mx-6 truncate">
-                    Naseem Electricals
-                </h1>
+
             </header>
             {/* Slide-out Navigation Panel */}
             <div
                 ref={panelRef}
-                className={`fixed top-[4rem] left-0 h-[calc(100%-4rem)] bg-gradient-to-b from-blue-50 to-blue-100 shadow-2xl border-r border-blue-200 transition-transform duration-300 ease-in-out z-40
-                ${isOpen ? "translate-x-0" : "-translate-x-full"}
+                className={`fixed top-[4rem] right-0 h-[calc(100%-4rem)] bg-gradient-to-b from-blue-50 to-blue-100 shadow-2xl border-l border-blue-200 transition-transform duration-300 ease-in-out z-40
+                ${isOpen ? "translate-x-0" : "translate-x-full"}
                 w-3/5 sm:w-2/5 md:w-1/4 lg:w-[30%]`}
             >
                 <div className="p-3 flex flex-col gap-4">
