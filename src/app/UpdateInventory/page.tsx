@@ -8,7 +8,6 @@ import NavigationPanel from "@/components/NavigationPanel";
 import LoadingScreen from "@/components/LoadingScreen";
 import SuccessMessage from "@/components/AddProduct/SuccessMessage";
 import ProductsInInventory from "@/components/ProductsInInventory";
-import BackToDashboard from "@/components/BackToDashboard";
 import {Search} from "lucide-react";
 
 const UpdateInventoryPage = () => {
@@ -25,7 +24,7 @@ const UpdateInventoryPage = () => {
     const [unitPrice, setUnitPrice] = useState(0);
     const [admin, setAdmin] = useState(false);
 
-    // 🔹 Verify login and fetch products
+    // Verify login and fetch products
     useEffect(() => {
 
         apiHelper.verifyLogin()
@@ -46,7 +45,7 @@ const UpdateInventoryPage = () => {
         includeScore: true,
     });
 
-    // 🔹 Handle product search
+    // Handle product search
     const handleSearchChange = (typed: string) => {
         setSearchName(typed);
         if (!typed.trim()) {
@@ -65,7 +64,7 @@ const UpdateInventoryPage = () => {
         setSearchName(product.productName);
     };
 
-    // 🔹 Handle inventory update
+    // Handle inventory update
     const handleUpdateInventory = async () => {
         if (!selectedProduct || !requestType) {
             setSuccessMessage("Please select a product and request type");
@@ -183,6 +182,7 @@ const UpdateInventoryPage = () => {
                                 <input
                                     type="radio"
                                     name="requestType"
+                                    className="text-gray-950"
                                     value="procure"
                                     checked={requestType === "procure"}
                                     onChange={() => setRequestType("procure")}
@@ -193,12 +193,14 @@ const UpdateInventoryPage = () => {
                                 <input
                                     type="radio"
                                     name="requestType"
+                                    className="text-gray-950"
                                     value="sell"
                                     checked={requestType === "sell"}
                                     onChange={() => setRequestType("sell")}
                                 />
                                 Sell
                             </label>
+
                         </div>
                     </div>
 
@@ -210,20 +212,22 @@ const UpdateInventoryPage = () => {
                         <input
                             type="number"
                             className="w-full p-2 border rounded-lg text-gray-950"
-                            value={quantity}
+                            placeholder="Enter Quantity"
+                            value={quantity === 0 ? "" : quantity}
                             onChange={(e) => setQuantity(Number(e.target.value))}
                         />
                     </div>
 
                     {/* Per unit price */}
                     <div className="mb-3">
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                        <label className="block text-sm font-medium text-gray-950 mb-1">
                             Per Unit Price
                         </label>
                         <input
                             type="number"
                             className="w-full p-2 border rounded-lg text-gray-950"
-                            value={unitPrice}
+                            placeholder="Enter unit price"
+                            value={unitPrice === 0 ? "" : unitPrice}
                             onChange={(e) => setUnitPrice(Number(e.target.value))}
                         />
                     </div>
@@ -238,9 +242,6 @@ const UpdateInventoryPage = () => {
                     </button>
                 </div>
             )}
-
-            {/* Back to Dashboard */}
-            <BackToDashboard />
         </div>
     );
 };

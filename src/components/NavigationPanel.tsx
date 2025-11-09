@@ -53,12 +53,11 @@ const NavigationPanel: React.FC<NavigationPanelProps> = ({ admin }) => {
                     >
                         {isOpen ? <ArrowLeft size={26} /> : <Menu size={26} />}
                     </button>
-                <h1 className="text-base sm:text-lg md:text-xl font-semibold tracking-wide text-center flex-1 mx-3 sm:mx-6 truncate">
-                    Inventory Management System
+                <h1 className="text-lg sm:text-2xl md:text-3xl font-extrabold tracking-wide text-center flex-1 mx-3 sm:mx-6 truncate">
+                    Naseem Electricals
                 </h1>
-                {/*<div className="w-10" />*/}
             </header>
-            {/* 🟩 Slide-out Navigation Panel */}
+            {/* Slide-out Navigation Panel */}
             <div
                 ref={panelRef}
                 className={`fixed top-[4rem] left-0 h-[calc(100%-4rem)] bg-gradient-to-b from-blue-50 to-blue-100 shadow-2xl border-r border-blue-200 transition-transform duration-300 ease-in-out z-40
@@ -108,7 +107,7 @@ const NavigationPanel: React.FC<NavigationPanelProps> = ({ admin }) => {
                 </div>
             </div>
 
-            {/* 🟨 Overlay (optional) */}
+            {/* Overlay (optional) */}
             {isOpen && (
                 <div
                     className="fixed inset-0 bg-black opacity-40 z-30"

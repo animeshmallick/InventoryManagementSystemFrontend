@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import Fuse from "fuse.js";
 import {AnimatePresence} from "framer-motion";
 import NavigationPanel from "@/components/NavigationPanel";
-import BackToDashboard from "@/components/BackToDashboard";
 import {ShoppingBag, Search, X} from "lucide-react";
 import apiHelper from "@/helpers/ApiHelper";
 import {Product} from "@/blueprint/customBlueprints";
@@ -148,7 +147,6 @@ const ShowAllProductsPage = () => {
                 )}
             </div>
 
-            <BackToDashboard />
         </div>
     );
 };

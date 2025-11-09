@@ -7,7 +7,6 @@ import NavigationPanel from "@/components/NavigationPanel";
 import AddProductForm from "@/components/AddProduct/AddProductForm";
 import SuccessMessage from "@/components/AddProduct/SuccessMessage";
 import SimilarProducts from "@/components/SimilarProducts";
-import BackToDashboard from "@/components/BackToDashboard";
 import {Product} from "@/blueprint/customBlueprints";
 import apiHelper from "@/helpers/ApiHelper";
 import LoadingScreen from "@/components/LoadingScreen";
@@ -127,8 +126,6 @@ const AddProductPage = () => {
                 />
             </div>
 
-            {/* Back to Dashboard */}
-            <BackToDashboard />
         </div>
     );
 };

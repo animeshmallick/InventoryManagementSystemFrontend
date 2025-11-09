@@ -57,7 +57,7 @@ const AddProductForm: React.FC<AddProductFormProps> = ({
     }, []);
 
     useEffect(() => {
-        // 🟩 Whenever categories change, update filteredCategories too
+        // Whenever categories change, update filteredCategories too
         setFilteredCategories(categories);
     }, [categories]);
 
@@ -139,7 +139,7 @@ const AddProductForm: React.FC<AddProductFormProps> = ({
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 outline-none text-gray-950"
                         autoComplete="off"
                     />
-                    {/* 🟩 Dropdown toggle icon */}
+                    {/* Dropdown toggle icon */}
                     <button
                         type="button"
                         onClick={() => setShowDropdown((prev) => !prev)}
@@ -150,7 +150,7 @@ const AddProductForm: React.FC<AddProductFormProps> = ({
                     </button>
                 </div>
 
-            {/* 🟩 Dropdown List */}
+            {/* Dropdown List */}
             {showDropdown && filteredCategories.length > 0 && (
                 <ul className="absolute z-10 w-full bg-white border border-gray-300 rounded-lg mt-1 max-h-40 overflow-y-auto shadow-md" ref={dropdownRef}>
                     {filteredCategories.map((category, index) => (
@@ -172,10 +172,10 @@ const AddProductForm: React.FC<AddProductFormProps> = ({
             <div>
                 <label className="block text-gray-700 font-medium">Cost Price (₹)</label>
                 <input
-                    type="text"
+                    type="number"
                     name="productCostPrice"
-                    placeholder="Enter price"
-                    value={productCostPrice}
+                    placeholder="Enter Cost Price"
+                    value={productCostPrice === 0 ? "" : productCostPrice}
                     onChange={handleChange}
                     min={1}
                     required
@@ -185,10 +185,10 @@ const AddProductForm: React.FC<AddProductFormProps> = ({
             <div>
                 <label className="block text-gray-700 font-medium">Selling Price (₹)</label>
                 <input
-                    type="text"
+                    type="number"
                     name="productSellingPrice"
-                    placeholder="Enter price"
-                    value={productSellingPrice}
+                    placeholder="Enter Selling Price"
+                    value={productSellingPrice === 0 ? "" : productSellingPrice}
                     onChange={handleChange}
                     min={1}
                     required

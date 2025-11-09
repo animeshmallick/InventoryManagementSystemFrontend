@@ -16,7 +16,7 @@ interface UpdateInventoryFormProps {
 const UpdateInventoryForm: React.FC<UpdateInventoryFormProps> = ({onSubmit,loading}) => {
     const [formData, setFormData] = useState({
         productId: "",
-        productQuantity: "",
+        productQuantity: 0,
         productCostPrice: 0,
         productSellingPrice: 0,
         requestType: "procure",
@@ -74,7 +74,7 @@ const UpdateInventoryForm: React.FC<UpdateInventoryFormProps> = ({onSubmit,loadi
                     type="number"
                     name="productQuantity"
                     placeholder="Enter quantity"
-                    value={formData.productQuantity}
+                    value={formData.productQuantity === 0 ? "" : formData.productQuantity}
                     onChange={handleChange}
                     required
                     min={1}
@@ -91,7 +91,7 @@ const UpdateInventoryForm: React.FC<UpdateInventoryFormProps> = ({onSubmit,loadi
                     type="number"
                     name="productSellingPrice"
                     placeholder="Enter price"
-                    value={formData.productSellingPrice}
+                    value={formData.productSellingPrice === 0 ? "" : formData.productSellingPrice}
                     onChange={handleChange}
                     required
                     min={0}
