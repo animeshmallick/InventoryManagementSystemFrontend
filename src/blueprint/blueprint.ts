@@ -32,3 +32,10 @@ export interface DeleteProductResponse {
     message: string,
     product: Product[]
 }
+export interface GetProductByIdResponse {
+    product: Product;
+}
+export interface UpdateProductResponse {
+    message: string;
+    product: Product;
+}
