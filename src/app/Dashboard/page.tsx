@@ -42,14 +42,6 @@ const DashboardPage = () => {
                     <h2 className="text-3xl font-bold text-gray-800 mb-4 text-center">
                         About Us
                     </h2>
-                    <p className="text-gray-700 leading-relaxed mb-4 text-justify">
-                        Welcome to <span className="font-semibold text-blue-700">Naseem Electrical</span>,
-                        your trusted partner for all types of electrical products and services in
-                        <span className="font-medium"> Jamtara</span>. With years of experience in the
-                        electrical industry, we specialize in providing
-                        <span className="font-medium"> quality electrical goods, wiring materials, lighting solutions,</span>
-                        and <span className="font-medium">repair services</span> for both residential and commercial needs.
-                    </p>
 
                     <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 mb-4">
                         <h3 className="text-xl font-semibold text-blue-700 mb-2">
