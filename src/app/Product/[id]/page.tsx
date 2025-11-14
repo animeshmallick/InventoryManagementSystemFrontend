@@ -113,7 +113,7 @@ const ProductPage = () => {
                         <label className="block text-sm font-medium text-gray-700">
                             Product ID
                         </label>
-                        <p className="mt-1 text-gray-900 bg-gray-100 p-2 rounded-md">
+                        <p className="mt-1 text-gray-700 bg-gray-100 p-2 rounded-md">
                             {product.product_id}
                         </p>
                     </div>
@@ -128,7 +128,7 @@ const ProductPage = () => {
                                 type="text"
                                 value={productName ? productName : ""}
                                 onChange={(e) => setProductName(e.target.value )}
-                                className="mt-1 w-full border rounded-md p-2"
+                                className="mt-1 w-full border rounded-md p-2 text-gray-700"
                             />
                         ) : (
                             <p className="mt-1 text-gray-900">{productName}</p>
@@ -145,10 +145,10 @@ const ProductPage = () => {
                                 type="text"
                                 value={productCategory ? productCategory : ""}
                                 onChange={(e) => setProductCategory(e.target.value)}
-                                className="mt-1 w-full border rounded-md p-2"
+                                className="mt-1 w-full border rounded-md p-2 text-gray-700"
                             />
                         ) : (
-                            <p className="mt-1 text-gray-900">{productCategory}</p>
+                            <p className="mt-1 text-gray-700">{productCategory}</p>
                         )}
                     </div>
 
@@ -175,10 +175,10 @@ const ProductPage = () => {
                                 type="number"
                                 value={productSellingPrice ? productSellingPrice : ""}
                                 onChange={(e) => setProductSellingPrice(Number(e.target.value))}
-                                className="mt-1 w-full border rounded-md p-2"
+                                className="mt-1 w-full border rounded-md p-2 text-gray-700"
                             />
                         ) : (
-                            <p className="mt-1 text-gray-900">
+                            <p className="mt-1 text-gray-700">
                                 ₹{productSellingPrice ? productSellingPrice: 0}
                             </p>
                         )}
