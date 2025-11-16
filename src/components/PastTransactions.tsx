@@ -217,7 +217,7 @@ const PastTransactions: React.FC<PastTransactionsProps> = ({ productId, editMode
                             ))}
                         </div>
 
-                        <div className="sticky bottom-2 mt-6 p-4 bg-yellow-400 rounded-xl flex justify-between font-semibold shadow-sm">
+                        <div className="sticky bottom-2 mt-6 p-4 bg-yellow-400 rounded-xl flex justify-between font-semibold shadow-sm text-gray-600">
                             <span>Total Quantity: {totals.qty}</span>
                             <span>Total Amount: ₹{totals.amount}</span>
                         </div>
