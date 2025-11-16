@@ -16,3 +16,13 @@ export interface Product {
     createdBy: string;
     lastUpdatedAt: string;
 }
+export interface Transaction{
+    order_id: string;
+    productId: string;
+    quantity: number;
+    unitPrice: number;
+    totalOrderAmount: number;
+    requestType: string;
+    orderDate: string;
+    orderTime: string;
+}

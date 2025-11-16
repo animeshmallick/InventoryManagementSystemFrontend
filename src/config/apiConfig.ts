@@ -1,5 +1,5 @@
 const API_CONFIG = {
-    ENV:"PROD",
+    ENV:"LOCAL",
     PROD_HOST: "https://api.quickchoice.in",
     LOCAL_HOST: "http://localhost",
     LOCAL_PORT: 7070,

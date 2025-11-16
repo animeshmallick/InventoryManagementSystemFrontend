@@ -1,6 +1,14 @@
 import axios from "axios";
 import API_CONFIG from "@/config/apiConfig";
-import {LoginResponse, VerifyLoginResponse, LogoutResponse, AddProductResponse, DeleteProductResponse, UpdateInventoryResponse, UpdateProductResponse} from "@/blueprint/blueprint";
+import {LoginResponse,
+        VerifyLoginResponse,
+        LogoutResponse,
+        AddProductResponse,
+        DeleteProductResponse,
+        UpdateInventoryResponse,
+        UpdateProductResponse,
+        GetPastTransactionsResponse,
+        DeleteOrderResponse} from "@/blueprint/blueprint";
 import {Product} from "@/blueprint/customBlueprints";
 
 
@@ -69,6 +77,16 @@ const ApiHelper = {
         productSellingPrice: number | null
     ): Promise<UpdateProductResponse>{
         return api.post(`/updateProduct/${productId}`,{productId, productName, productCategory, productSellingPrice} )
+        .then(response => response.data)
+        .catch(error => error.response.data);
+    },
+    async getPastTransactions(productId: string | null):Promise<GetPastTransactionsResponse>{
+        return api.post(`/getOrders/${productId}`)
+        .then(response => response.data)
+        .catch(error =>error.response.data);
+    },
+    async deleteOrder(orderId: string): Promise<DeleteOrderResponse>{
+        return api.post(`/deleteOrder/${orderId}`)
         .then(response => response.data)
         .catch(error => error.response.data);
     }

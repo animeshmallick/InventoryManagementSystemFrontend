@@ -1,20 +1,21 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
-import { useRouter } from "next/navigation";
-import { Menu, ArrowRight } from "lucide-react";
+import React, {useState, useEffect, useRef} from "react";
+import {useRouter} from "next/navigation";
+import {Menu, ArrowRight} from "lucide-react";
 import apiHelper from "@/helpers/ApiHelper";
 
 interface NavigationPanelProps {
-    admin: boolean;
+    admin: boolean,
+    headerRef?: React.Ref<HTMLElement>
 }
 
-const NavigationPanel: React.FC<NavigationPanelProps> = ({ admin }) => {
+const NavigationPanel: React.FC<NavigationPanelProps> = ({admin, headerRef}) => {
     const [isOpen, setIsOpen] = useState(false);
     const panelRef = useRef<HTMLDivElement>(null);
     const router = useRouter();
 
-    // 🟩 Close panel when clicking outside
+
     useEffect(() => {
         const handleClickOutside = (e: MouseEvent) => {
             if (panelRef.current && !panelRef.current.contains(e.target as Node)) {
@@ -30,7 +31,7 @@ const NavigationPanel: React.FC<NavigationPanelProps> = ({ admin }) => {
         router.push(path);
     };
 
-    const handleLogout = async ()  => {
+    const handleLogout = async () => {
         apiHelper.logoutUser()
             .then((result) => {
                 if (result.success)
@@ -42,6 +43,7 @@ const NavigationPanel: React.FC<NavigationPanelProps> = ({ admin }) => {
     return (
         <>
             <header
+                ref={headerRef}
                 className="fixed top-0 right-0 w-full flex items-center justify-between
                 bg-gradient-to-r from-blue-600 to-indigo-700 text-white px-4 sm:px-6 py-3 shadow-md z-50"
             >
@@ -49,13 +51,13 @@ const NavigationPanel: React.FC<NavigationPanelProps> = ({ admin }) => {
                     Naseem Electricals
                 </h1>
                 {/* Hamburger Icon */}
-                    <button
-                        onClick={() => setIsOpen(true)}
-                        className="flex items-center justify-center w-10 h-10 rounded-md
+                <button
+                    onClick={() => setIsOpen(true)}
+                    className="flex items-center justify-center w-10 h-10 rounded-md
                         bg-white/20 hover:bg-white/30 transition text-blue-100 hover:text-white"
-                    >
-                        {isOpen ? <ArrowRight size={26} /> : <Menu size={26} />}
-                    </button>
+                >
+                    {isOpen ? <ArrowRight size={26}/> : <Menu size={26}/>}
+                </button>
 
             </header>
             {/* Slide-out Navigation Panel */}

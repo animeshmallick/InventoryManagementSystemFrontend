@@ -1,4 +1,4 @@
-import {User,Product} from "@/blueprint/customBlueprints";
+import {User, Product, Transaction} from "@/blueprint/customBlueprints";
 export interface LoginResponse {
         success: boolean;
         message: boolean;
@@ -38,4 +38,11 @@ export interface GetProductByIdResponse {
 export interface UpdateProductResponse {
     message: string;
     product: Product;
+}
+export interface GetPastTransactionsResponse {
+    transactions: Transaction[];
+}
+export interface DeleteOrderResponse{
+    success: boolean;
+    message: string;
 }
