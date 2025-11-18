@@ -98,9 +98,9 @@ const AddProductPage = () => {
     if (loading) return (<LoadingScreen />);
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 to-blue-200 p-2">
+        <div className="flex flex-col items-center justify-start min-h-screen bg-gradient-to-br from-blue-50 to-blue-200">
             <NavigationPanel admin={admin}/>
-            <h1 className="text-3xl font-bold text-gray-800 mb-2">Add New Product</h1>
+            <h1 className="text-3xl font-bold text-gray-800 mt-2 mb-2">Add New Product</h1>
 
             {/* Inline success or error message */}
             <SuccessMessage message={successMessage} product={addedProduct} />

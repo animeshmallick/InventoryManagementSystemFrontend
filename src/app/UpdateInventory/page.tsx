@@ -20,7 +20,7 @@ const UpdateInventoryPage = () => {
     const [updatedProduct, setUpdatedProduct] = useState<Product | null>(null);
     const [searchName, setSearchName] = useState("");
     const [quantity, setQuantity] = useState<number>(0);
-    const [requestType, setRequestType] = useState("");
+    const [requestType, setRequestType] = useState("sell");
     const [unitPrice, setUnitPrice] = useState(0);
     const [admin, setAdmin] = useState(false);
 
@@ -100,9 +100,9 @@ const UpdateInventoryPage = () => {
     if (loading) return <LoadingScreen />;
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 to-blue-200 p-2">
+        <div className="flex flex-col items-center justify-start min-h-screen bg-gradient-to-br from-blue-50 to-blue-200">
             <NavigationPanel admin={admin} />
-            <h1 className="text-3xl font-bold text-gray-800 mb-2">Update Inventory</h1>
+            <h1 className="text-3xl font-bold text-gray-800 mt-2 mb-2">Update Inventory</h1>
 
             {/* Search Box */}
             <div className=" bg-white shadow-lg rounded-2xl p-4 w-full max-w-lg mb-4">
@@ -183,22 +183,22 @@ const UpdateInventoryPage = () => {
                                     type="radio"
                                     name="requestType"
                                     className="text-gray-950"
-                                    value="procure"
-                                    checked={requestType === "procure"}
-                                    onChange={() => setRequestType("procure")}
+                                    value="sell"
+                                    checked={requestType === "sell"}
+                                    onChange={() => setRequestType("sell")}
                                 />
-                                Procure
+                                Sell
                             </label>
                             <label className="flex items-center gap-2 text-gray-950">
                                 <input
                                     type="radio"
                                     name="requestType"
                                     className="text-gray-950"
-                                    value="sell"
-                                    checked={requestType === "sell"}
-                                    onChange={() => setRequestType("sell")}
+                                    value="procure"
+                                    checked={requestType === "procure"}
+                                    onChange={() => setRequestType("procure")}
                                 />
-                                Sell
+                                Buy
                             </label>
 
                         </div>

@@ -199,7 +199,7 @@ const AddProductForm: React.FC<AddProductFormProps> = ({
             <button
                 type="submit"
                 disabled={loading}
-                className={`w-full py-2.5 rounded-lg font-semibold shadow-md text-white transition ${
+                className={`w-full py-2 rounded-lg font-semibold shadow-md text-white transition ${
                     loading
                         ? "bg-gray-400 cursor-not-allowed"
                         : "bg-blue-600 hover:bg-blue-700"

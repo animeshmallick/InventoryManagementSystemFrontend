@@ -14,7 +14,7 @@ const LoginPage = () => {
         apiHelper.verifyLogin()
             .then(res => {
                 if (res.loggedIn)
-                    router.push("/Dashboard");
+                    router.push("/AllProducts");
             })
             .catch(err => console.log(err))
             .finally(() => setLoading(false));

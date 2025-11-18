@@ -44,8 +44,8 @@ const NavigationPanel: React.FC<NavigationPanelProps> = ({admin, headerRef}) => 
         <>
             <header
                 ref={headerRef}
-                className="fixed top-0 right-0 w-full flex items-center justify-between
-                bg-gradient-to-r from-blue-600 to-indigo-700 text-white px-4 sm:px-6 py-3 shadow-md z-50"
+                className="top-0 right-0 w-full flex items-center justify-between
+                bg-gradient-to-r from-blue-600 to-indigo-700 text-white px-4 sm:px-6 py-3 shadow-md z-50 rounded-2xl"
             >
                 <h1 className="text-lg sm:text-2xl md:text-3xl font-extrabold tracking-wide text-center flex-1 mx-3 sm:mx-6 truncate">
                     Naseem Electricals
@@ -69,20 +69,13 @@ const NavigationPanel: React.FC<NavigationPanelProps> = ({admin, headerRef}) => 
             >
                 <div className="p-3 flex flex-col gap-4">
                     <ul className="space-y-3 mt-4 text-gray-800 font-medium">
-                        <li
-                            className="cursor-pointer bg-white text-blue-700 font-semibold rounded-xl
-                            shadow-sm hover:shadow-md hover:bg-blue-100 px-4 py-3 text-center transition"
-                            onClick={() => handleNavigate("/Dashboard")}
-                        >
-                            Dashboard
-                        </li>
                         {admin && (
                             <li
                                 className="cursor-pointer bg-white text-blue-700 font-semibold rounded-xl
                                 shadow-sm hover:shadow-md hover:bg-blue-100 px-4 py-3 text-center transition"
                                 onClick={() => handleNavigate("/AddProduct")}
                             >
-                                Add Product
+                                Add New Product
                             </li>
                         )}
                         <li
@@ -90,7 +83,7 @@ const NavigationPanel: React.FC<NavigationPanelProps> = ({admin, headerRef}) => 
                             shadow-sm hover:shadow-md hover:bg-blue-100 px-4 py-3 text-center transition"
                             onClick={() => handleNavigate("/UpdateInventory")}
                         >
-                            Update Product
+                            Update Stock
                         </li>
                         <li
                             className="cursor-pointer bg-white text-blue-700 font-semibold rounded-xl

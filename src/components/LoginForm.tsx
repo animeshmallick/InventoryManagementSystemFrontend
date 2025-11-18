@@ -32,7 +32,7 @@ const LoginForm = () => {
         apiHelper.loginUser(Number(phone), password)
             .then((result) => {
                 if (result.success)
-                    router.push("/Dashboard");
+                    router.push("/AllProducts");
                 else{
                     setLoading(false);
                     router.push("/Login");

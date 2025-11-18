@@ -78,7 +78,7 @@ const ShowAllProductsPage = () => {
     }
 
     return (
-        <div className="flex flex-col items-center justify-start min-h-screen bg-gradient-to-br from-blue-50 to-blue-200 p-1.5 pt-16 sm:pt-20">
+        <div className="flex flex-col items-center justify-start min-h-screen bg-gradient-to-br from-blue-50 to-blue-200">
             <NavigationPanel admin={admin} />
             <div className="bg-white shadow-lg rounded-2xl p-1.5 w-full max-w-5xl">
                 {/* Header */}

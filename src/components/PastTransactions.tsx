@@ -129,36 +129,37 @@ const PastTransactions: React.FC<PastTransactionsProps> = ({ productId, editMode
     if (editMode) return null;
 
     return (
-        <div className="w-full max-w-4xl mt-5">
-            <div className="bg-white shadow-xl rounded-2xl p-6 border border-gray-200">
-                <h3 className="text-2xl font-semibold text-gray-800 mb-6">Past Transactions</h3>
-
+        <div className="w-full max-w-4xl mt-2">
+            <div className="bg-white backdrop-blur-md shadow-xl rounded-2xl p-2 border border-gray-200">
+                <div className="rounded-xl bg-gradient-to-r from-yellow-500 to-yellow-800 px-4 py-2 mb-3 shadow-sm">
+                    <h3 className="text-xl font-semibold text-gray-700 tracking-wide">Past Transactions</h3>
+                </div>
                 {loading ? (
-                    <p className="text-center text-gray-600 animate-pulse">Loading transactions...</p>
+                    <div className="text-center py-6 text-gray-600 animate-pulse text-lg">Loading transactions...</div>
                 ) : transactions.length === 0 ? (
                     <p className="text-gray-600">No past transactions found.</p>
                 ) : (
                     <>
-                        <div className="flex flex-wrap gap-4 mb-6">
+                        <div className="flex flex-wrap gap-4 mb-4">
                             <select
                                 value={typeFilter}
                                 onChange={(e) => setTypeFilter(e.target.value)}
-                                className="px-3 py-2 rounded-lg border-gray-300 bg-gray-50 text-gray-800 shadow-sm"
+                                className="px-2 py-1 rounded-lg border-gray-300 bg-gray-50 text-gray-800 shadow-sm"
                             >
-                                <option value="sell">Sell</option>
-                                <option value="procure">Procure</option>
+                                <option className="text-gray-800 text-xs" value="sell">Sell</option>
+                                <option className="text-gray-800 text-xs" value="procure">Buy</option>
                             </select>
 
                             <select
                                 value={dateFilter}
                                 onChange={(e) => setDateFilter(e.target.value)}
-                                className="px-3 py-2 rounded-lg border-gray-300 bg-gray-50 text-gray-800 shadow-sm"
+                                className="px-2 py-1 rounded-lg border-gray-300 bg-gray-50 text-gray-800 shadow-sm"
                             >
-                                <option value="today">Today</option>
-                                <option value="yesterday">Yesterday</option>
-                                <option value="last7">Last 7 Days</option>
-                                <option value="thisMonth">This Month</option>
-                                <option value="lastMonth">Last Month</option>
+                                <option className="text-gray-800 text-xs" value="today">Today</option>
+                                <option className="text-gray-800 text-xs" value="yesterday">Yesterday</option>
+                                <option className="text-gray-800 text-xs" value="last7">Last 7 Days</option>
+                                <option className="text-gray-800 text-xs" value="thisMonth">This Month</option>
+                                <option className="text-gray-800 text-xs" value="lastMonth">Last Month</option>
                             </select>
                         </div>
 
@@ -217,7 +218,7 @@ const PastTransactions: React.FC<PastTransactionsProps> = ({ productId, editMode
                             ))}
                         </div>
 
-                        <div className="sticky bottom-2 mt-6 p-4 bg-yellow-400 rounded-xl flex justify-between font-semibold shadow-sm text-gray-600">
+                        <div className="sticky bottom-2 mt-4 p-2 bg-yellow-200 rounded-xl text-[15px] flex justify-between font-semibold shadow-sm text-gray-600">
                             <span>Total Quantity: {totals.qty}</span>
                             <span>Total Amount: ₹{totals.amount}</span>
                         </div>

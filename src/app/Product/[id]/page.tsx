@@ -27,15 +27,6 @@ const ProductPage = () => {
     const headerRef = useRef<HTMLElement>(null);
     const [topOffset, setTopOffset] = useState(0);
 
-    useLayoutEffect(() => {
-        const updateHeight = () => {
-            if (headerRef.current) setTopOffset(headerRef.current.offsetHeight);
-        };
-        updateHeight();
-        window.addEventListener("resize", updateHeight);
-        return () => window.removeEventListener("resize", updateHeight);
-    }, []);
-
     const refreshProduct = () => {
         if(!productId) return;
         apiHelper.getProductById(productId)
@@ -67,6 +58,16 @@ const ProductPage = () => {
             .finally(() => setLoading(false));
 
     }, [productId, router]);
+
+    useLayoutEffect(() => {
+        const updateHeight = () => {
+            if (headerRef.current) setTopOffset(headerRef.current.offsetHeight);
+        };
+        updateHeight();
+        window.addEventListener("resize", updateHeight);
+        return () => window.removeEventListener("resize", updateHeight);
+    }, []);
+
 
     const handleDelete = async () => {
         if (!product) return;
@@ -116,13 +117,13 @@ const ProductPage = () => {
     if (!product) return <p className="text-center text-gray-600">Product not found.</p>;
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-200 p-2"
-        style={{ paddingTop: topOffset + 30 }}
+        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-200"
         >
             <NavigationPanel admin={admin} headerRef={headerRef}/>
-            <div className="bg-white shadow-lg rounded-2xl p-6 w-full max-w-3xl relative">
 
-                <h2 className="text-2xl font-bold text-center text-gray-800 mb-6 mt-2">
+            <div className="bg-white shadow-lg rounded-2xl mt-1 px-4 py-1 w-full max-w-3xl relative">
+
+                <h2 className="text-2xl font-bold text-center text-gray-800 mb-1 mt-1">
                     Product Details
                 </h2>
 
@@ -133,7 +134,7 @@ const ProductPage = () => {
                         <label className="block text-sm font-medium text-gray-700">
                             Product ID
                         </label>
-                        <p className="mt-1 text-gray-700 bg-gray-100 p-2 rounded-md">
+                        <p className="mt-1 text-gray-700 bg-gray-100 p-1.5 rounded-md">
                             {product.product_id}
                         </p>
                     </div>
@@ -148,7 +149,7 @@ const ProductPage = () => {
                                 type="text"
                                 value={productName ? productName : ""}
                                 onChange={(e) => setProductName(e.target.value )}
-                                className="mt-1 w-full border rounded-md p-2 text-gray-700"
+                                className="mt-1 w-full border rounded-md p-1.5 text-gray-700"
                             />
                         ) : (
                             <p className="mt-1 text-gray-900">{productName}</p>
@@ -165,7 +166,7 @@ const ProductPage = () => {
                                 type="text"
                                 value={productCategory ? productCategory : ""}
                                 onChange={(e) => setProductCategory(e.target.value)}
-                                className="mt-1 w-full border rounded-md p-2 text-gray-700"
+                                className="mt-1 w-full border rounded-md p-1.5 text-gray-700"
                             />
                         ) : (
                             <p className="mt-1 text-gray-700">{productCategory}</p>
@@ -181,7 +182,7 @@ const ProductPage = () => {
                             type="number"
                             value={productStock}
                             readOnly
-                            className="mt-1 w-full rounded-md p-2 bg-gray-100 text-gray-700 cursor-not-allowed"
+                            className="mt-1 w-full rounded-md p-1.5 bg-gray-100 text-gray-700 cursor-not-allowed"
                         />
                     </div>
 
@@ -195,7 +196,7 @@ const ProductPage = () => {
                                 type="number"
                                 value={productSellingPrice ? productSellingPrice : ""}
                                 onChange={(e) => setProductSellingPrice(Number(e.target.value))}
-                                className="mt-1 w-full border rounded-md p-2 text-gray-700"
+                                className="mt-1 w-full border rounded-md p-1.5 text-gray-700"
                             />
                         ) : (
                             <p className="mt-1 text-gray-700">
@@ -206,20 +207,20 @@ const ProductPage = () => {
                 </div>
 
                 {/* Edit && Delete Buttons */}
-                <div className="flex justify-end gap-3 mt-6">
+                <div className="flex justify-end gap-3 mt-2">
                     {admin && (
                         <>
                     {!editMode && (
                         <>
                             <button
                                 onClick={() => setEditMode(true)}
-                                className="flex items-center gap-2 bg-yellow-400 hover:bg-yellow-500 text-black px-4 py-2 rounded-lg transition"
+                                className="flex items-center gap-2 bg-yellow-400 hover:bg-yellow-500 text-black px-2 py-1 rounded-lg transition"
                             >
                                 <Pencil className="w-4 h-4" /> Edit
                             </button>
                             <button
                                 onClick={handleDelete}
-                                className="flex items-center gap-2 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition"
+                                className="flex items-center gap-2 bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded-lg transition"
                             >
                                 <Trash2 className="w-4 h-4" /> Delete
                             </button>
@@ -235,13 +236,13 @@ const ProductPage = () => {
                                     setProductSellingPrice(product.productSellingPrice);
                                     setEditMode(false);
                                 }}
-                                className="flex items-center gap-2 bg-gray-300 hover:bg-gray-400 text-black px-4 py-2 rounded-lg transition"
+                                className="flex items-center gap-2 bg-gray-300 hover:bg-gray-400 text-black px-2 py-1 rounded-lg transition"
                             >
                                 Cancel
                             </button>
                             <button
                                 onClick={handleSave}
-                                className="flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition"
+                                className="flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white px-2 py-1 rounded-lg transition"
                             >
                                 <Save className="w-4 h-4" /> Save Changes
                             </button>
