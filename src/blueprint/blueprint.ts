@@ -46,3 +46,7 @@ export interface DeleteOrderResponse{
     success: boolean;
     message: string;
 }
+export interface GetAllOrdersResponse {
+    success: boolean;
+    allOrders: Transaction[];
+}

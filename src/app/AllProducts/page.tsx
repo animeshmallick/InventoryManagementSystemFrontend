@@ -139,8 +139,7 @@ const ShowAllProductsPage = () => {
                                 .map((p) => (
                                 <DisplayProductCompactContainer
                                     product={p}
-                                    key={p.product_id}
-                                    handleDelete={handleDelete} />
+                                    key={p.product_id}/>
                             ))}
                         </AnimatePresence>
                     </div>

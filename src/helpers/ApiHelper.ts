@@ -1,14 +1,17 @@
 import axios from "axios";
 import API_CONFIG from "@/config/apiConfig";
-import {LoginResponse,
-        VerifyLoginResponse,
-        LogoutResponse,
-        AddProductResponse,
-        DeleteProductResponse,
-        UpdateInventoryResponse,
-        UpdateProductResponse,
-        GetPastTransactionsResponse,
-        DeleteOrderResponse} from "@/blueprint/blueprint";
+import {
+    LoginResponse,
+    VerifyLoginResponse,
+    LogoutResponse,
+    AddProductResponse,
+    DeleteProductResponse,
+    UpdateInventoryResponse,
+    UpdateProductResponse,
+    GetPastTransactionsResponse,
+    DeleteOrderResponse,
+    GetAllOrdersResponse
+} from "@/blueprint/blueprint";
 import {Product} from "@/blueprint/customBlueprints";
 
 
@@ -87,6 +90,11 @@ const ApiHelper = {
     },
     async deleteOrder(orderId: string): Promise<DeleteOrderResponse>{
         return api.post(`/deleteOrder/${orderId}`)
+        .then(response => response.data)
+        .catch(error => error.response.data);
+    },
+    async getAllOrders(): Promise<GetAllOrdersResponse>{
+        return api.post(`/getAllOrders`)
         .then(response => response.data)
         .catch(error => error.response.data);
     }

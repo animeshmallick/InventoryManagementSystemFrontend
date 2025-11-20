@@ -18,7 +18,8 @@ export interface Product {
 }
 export interface Transaction{
     order_id: string;
-    productId: string;
+    product_id: string;
+    productName: string;
     quantity: number;
     unitPrice: number;
     totalOrderAmount: number;

@@ -4,10 +4,9 @@ import {Product} from "@/blueprint/customBlueprints";
 import {motion} from "framer-motion";
 interface DisplayProductCompactProps {
     product: Product;
-    handleDelete?: (productId: string) => void;
 }
 
-const DisplayProductCompactContainer : React.FC<DisplayProductCompactProps> = ({product, handleDelete}) => {
+const DisplayProductCompactContainer : React.FC<DisplayProductCompactProps> = ({product}) => {
 
     const router = useRouter();
 

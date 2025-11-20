@@ -9,6 +9,7 @@ import LoadingScreen from "@/components/LoadingScreen";
 import SuccessMessage from "@/components/AddProduct/SuccessMessage";
 import ProductsInInventory from "@/components/ProductsInInventory";
 import {Search} from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const UpdateInventoryPage = () => {
     const router = useRouter();
@@ -23,6 +24,19 @@ const UpdateInventoryPage = () => {
     const [requestType, setRequestType] = useState("sell");
     const [unitPrice, setUnitPrice] = useState(0);
     const [admin, setAdmin] = useState(false);
+    const [distinctCategory, setDistinctCategory] = useState<string[]>([]);
+    const [selectedCategory, setSelectedCategory] = useState<string>("");
+
+    const fetchDistinctCategories = (products: Product[]): string[] => {
+        const distinctCategory: string[] = [];
+        products.map(p => {
+            if (!distinctCategory.includes(p.productCategory))
+                distinctCategory.push(p.productCategory);
+        });
+        distinctCategory.sort((a, b) => (a > b ? 1 : -1));
+        distinctCategory.unshift("All");
+        return distinctCategory;
+    }
 
     // Verify login and fetch products
     useEffect(() => {
@@ -33,7 +47,10 @@ const UpdateInventoryPage = () => {
                     return router.push("/Login");
                 if (res?.user.userRole === "admin")
                     setAdmin(true);
-                apiHelper.getAllProducts().then(data => setAllProducts(data));
+                apiHelper.getAllProducts().then(data => {
+                    setAllProducts(data);
+                    setDistinctCategory(fetchDistinctCategories(data));
+                });
             })
             .catch(() => router.push("/Login"))
             .finally(() => setLoading(false));
@@ -99,13 +116,22 @@ const UpdateInventoryPage = () => {
 
     if (loading) return <LoadingScreen />;
 
+    const categoryFilteredProducts =
+        selectedCategory === "All"
+            ? allProducts
+            : allProducts.filter(
+                (p) => p.productCategory === selectedCategory
+            );
+
+
     return (
         <div className="flex flex-col items-center justify-start min-h-screen bg-gradient-to-br from-blue-50 to-blue-200">
             <NavigationPanel admin={admin} />
             <h1 className="text-3xl font-bold text-gray-800 mt-2 mb-2">Update Inventory</h1>
 
-            {/* Search Box */}
+
             <div className=" bg-white shadow-lg rounded-2xl p-4 w-full max-w-lg mb-4">
+                {/* Search Box */}
                 <div className="flex items-center">
                     <Search className="h-5 w-5 text-gray-950 absolute ml-3 pointer-events-none" />
                     <input
@@ -117,12 +143,50 @@ const UpdateInventoryPage = () => {
                     />
                 </div>
 
-                {/* Matching results */}
-                {filteredProducts.length > 0 && (
-                    <ProductsInInventory
-                        products={filteredProducts}
-                        onSelect={handleSelectedProduct}
-                    />
+                    {/* Categories */}
+                    <div className="flex flex-wrap gap-2 mt-2 mb-4">
+                        {distinctCategory.map(cat => (
+                            <button
+                                key={cat}
+                                onClick={() => setSelectedCategory(cat)}
+                                className={`px-3 py-1 rounded text-black ${
+                                    selectedCategory === cat
+                                        ? "bg-blue-600 text-white"
+                                        : "bg-gray-200"
+                                }`}
+                            >
+                                {cat}
+                            </button>
+                        ))}
+                    </div>
+                {(!selectedProduct  || searchName.trim() !== "" || selectedCategory !== "All") && (
+                    <>
+                    <AnimatePresence>
+                        {selectedCategory &&
+                            filteredProducts.length === 0 &&
+                            categoryFilteredProducts.length > 0 && (
+                                <motion.div
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -20 }}
+                                    transition={{ duration: 0.25 }}
+                                >
+                                    <ProductsInInventory
+                                        products={categoryFilteredProducts}
+                                        onSelect={handleSelectedProduct}
+                                    />
+                                </motion.div>
+                            )}
+                    </AnimatePresence>
+
+                    {/* Matching results */}
+                    {filteredProducts.length > 0 && (
+                        <ProductsInInventory
+                            products={filteredProducts}
+                            onSelect={handleSelectedProduct}
+                        />
+                    )}
+                    </>
                 )}
             </div>
 

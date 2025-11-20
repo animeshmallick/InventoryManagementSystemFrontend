@@ -47,7 +47,10 @@ const NavigationPanel: React.FC<NavigationPanelProps> = ({admin, headerRef}) => 
                 className="top-0 right-0 w-full flex items-center justify-between
                 bg-gradient-to-r from-blue-600 to-indigo-700 text-white px-4 sm:px-6 py-3 shadow-md z-50 rounded-2xl"
             >
-                <h1 className="text-lg sm:text-2xl md:text-3xl font-extrabold tracking-wide text-center flex-1 mx-3 sm:mx-6 truncate">
+                <h1 className="cursor-pointer inline-block text-lg sm:text-2xl md:text-3xl font-extrabold tracking-wide text-center bg-indigo-500
+                               text-white px-4 py-1 rounded-lg shadow hover:bg-indigo-600 hover:shadow-md transition-all mx-auto block "
+                    onClick={() => handleNavigate("/AllProducts")}
+                >
                     Naseem Electricals
                 </h1>
                 {/* Hamburger Icon */}
@@ -91,6 +94,13 @@ const NavigationPanel: React.FC<NavigationPanelProps> = ({admin, headerRef}) => 
                             onClick={() => handleNavigate("/AllProducts")}
                         >
                             Show All Products
+                        </li>
+                        <li
+                            className="cursor-pointer bg-white text-blue-700 font-semibold rounded-xl
+                            shadow-sm hover:shadow-md hover:bg-blue-100 px-4 py-3 text-center transition"
+                            onClick={() => handleNavigate("/AllOrders")}
+                        >
+                            Show All Orders
                         </li>
                         <li
                             className="cursor-pointer bg-white text-red-500 font-semibold rounded-xl

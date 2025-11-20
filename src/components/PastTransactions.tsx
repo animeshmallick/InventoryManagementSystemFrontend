@@ -91,7 +91,7 @@ const PastTransactions: React.FC<PastTransactionsProps> = ({ productId, editMode
                 refreshProduct();
             })
             .catch((err) => {
-                console.error("Failed to load past transactions:", err);
+                console.error("Failed to delete past transactions:", err);
             })
             .finally(() => setLoading(false));
     };
