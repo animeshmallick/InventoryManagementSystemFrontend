@@ -8,7 +8,7 @@ import NavigationPanel from "@/components/NavigationPanel";
 import LoadingScreen from "@/components/LoadingScreen";
 import SuccessMessage from "@/components/AddProduct/SuccessMessage";
 import ProductsInInventory from "@/components/ProductsInInventory";
-import {Search} from "lucide-react";
+import {Search, X} from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const UpdateInventoryPage = () => {
@@ -78,7 +78,7 @@ const UpdateInventoryPage = () => {
         setSelectedProduct(product);
         setUpdatedProduct(null);
         setFilteredProducts([]);
-        setSearchName(product.productName);
+        setSearchName("");
     };
 
     // Handle inventory update
@@ -129,8 +129,10 @@ const UpdateInventoryPage = () => {
             <NavigationPanel admin={admin} />
             <h1 className="text-3xl font-bold text-gray-800 mt-2 mb-2">Update Inventory</h1>
 
-
+            {(!selectedProduct) && (
+                <>
             <div className=" bg-white shadow-lg rounded-2xl p-4 w-full max-w-lg mb-4">
+
                 {/* Search Box */}
                 <div className="flex items-center">
                     <Search className="h-5 w-5 text-gray-950 absolute ml-3 pointer-events-none" />
@@ -159,8 +161,7 @@ const UpdateInventoryPage = () => {
                             </button>
                         ))}
                     </div>
-                {(!selectedProduct  || searchName.trim() !== "" || selectedCategory !== "All") && (
-                    <>
+
                     <AnimatePresence>
                         {selectedCategory &&
                             filteredProducts.length === 0 &&
@@ -186,9 +187,9 @@ const UpdateInventoryPage = () => {
                             onSelect={handleSelectedProduct}
                         />
                     )}
-                    </>
-                )}
             </div>
+            </>
+            )}
 
             {/* Inline success or error message */}
             <div className="w-full max-w-lg mb-3">
@@ -199,7 +200,26 @@ const UpdateInventoryPage = () => {
 
             {/* Product details and update form */}
             {selectedProduct && (
-                <div className="bg-white shadow-lg rounded-2xl p-4 w-full max-w-lg">
+                <motion.div
+                    initial={{ opacity: 0, y: 40 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.35, ease: "easeOut" }}
+                    className="relative bg-white shadow-lg rounded-2xl p-4 w-full max-w-lg">
+                    <button
+                        onClick={() => {
+                            setSelectedProduct(null);
+                            setSelectedCategory("")
+                            setQuantity(0);
+                            setUnitPrice(0);
+                            setRequestType("sell");
+                        }}
+                        className="absolute -top-4 right-4 bg-black text-white w-8 h-8 flex items-center justify-center rounded-full
+                                   shadow-lg hover:scale-110 active:scale-95 transition duration-200"
+                        aria-label="Close"
+                    >
+                        <X className="h-5 w-5" />
+                    </button>
+                    <div className="p-4">
                     <div className="mb-3">
                         <label className="block text-sm font-medium text-gray-700">
                             Product ID
@@ -295,7 +315,7 @@ const UpdateInventoryPage = () => {
                             onChange={(e) => setUnitPrice(Number(e.target.value))}
                         />
                     </div>
-
+                    </div>
                     {/* Update Button */}
                     <button
                         onClick={handleUpdateInventory}
@@ -304,7 +324,7 @@ const UpdateInventoryPage = () => {
                     >
                         {loading ? "Updating..." : "Update Inventory"}
                     </button>
-                </div>
+                </motion.div>
             )}
         </div>
     );
