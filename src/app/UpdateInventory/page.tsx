@@ -22,7 +22,7 @@ const UpdateInventoryPage = () => {
     const [searchName, setSearchName] = useState("");
     const [quantity, setQuantity] = useState<number>(0);
     const [requestType, setRequestType] = useState("sell");
-    const [unitPrice, setUnitPrice] = useState(0);
+    const [unitPrice, setUnitPrice] = useState<number | null>(0);
     const [admin, setAdmin] = useState(false);
     const [distinctCategory, setDistinctCategory] = useState<string[]>([]);
     const [selectedCategory, setSelectedCategory] = useState<string>("");
@@ -56,11 +56,20 @@ const UpdateInventoryPage = () => {
             .finally(() => setLoading(false));
     }, [router]);
 
-    const fuse = new Fuse(allProducts, {
-        keys: ["productName", "productCategory"],
-        threshold: 0.3,
-        includeScore: true,
-    });
+    const productPrice = (requestType === "sell"
+        ? selectedProduct?.productSellingPrice
+        : selectedProduct?.productCostPrice) ?? 0;
+
+    if(unitPrice === 0 && productPrice !== 0) setUnitPrice(productPrice);
+
+    const fuse = new Fuse(
+        selectedCategory === "" || selectedCategory === "All" ? allProducts : allProducts.filter(p => p.productCategory === selectedCategory),
+        {
+            keys: ["productName", "productCategory"],
+            threshold: 0.3,
+            includeScore: true,
+        }
+    );
 
     // Handle product search
     const handleSearchChange = (typed: string) => {
@@ -87,7 +96,7 @@ const UpdateInventoryPage = () => {
             setSuccessMessage("Please select a product and request type");
             return;
         }
-        if (quantity <= 0 || unitPrice <= 0) {
+        if (unitPrice && (unitPrice <= 0 || quantity <= 0)) {
             setSuccessMessage("Quantity and price must be positive values.");
             return;
         }
@@ -97,7 +106,7 @@ const UpdateInventoryPage = () => {
             selectedProduct.product_id,
             quantity,
             requestType,
-            unitPrice)
+            unitPrice ? unitPrice : 0)
         .then(res => {
             if (res?.product) {
                 setSuccessMessage("Inventory updated successfully!");
@@ -150,7 +159,7 @@ const UpdateInventoryPage = () => {
                         {distinctCategory.map(cat => (
                             <button
                                 key={cat}
-                                onClick={() => setSelectedCategory(cat)}
+                                onClick={() => {setSelectedCategory(cat); setSearchName("");}}
                                 className={`px-3 py-1 rounded text-black ${
                                     selectedCategory === cat
                                         ? "bg-blue-600 text-white"
@@ -164,7 +173,7 @@ const UpdateInventoryPage = () => {
 
                     <AnimatePresence>
                         {selectedCategory &&
-                            filteredProducts.length === 0 &&
+                            !searchName.trim() &&
                             categoryFilteredProducts.length > 0 && (
                                 <motion.div
                                     initial={{ opacity: 0, y: 20 }}
@@ -178,15 +187,27 @@ const UpdateInventoryPage = () => {
                                     />
                                 </motion.div>
                             )}
+                        {/* Matching results */}
+                        {searchName.trim() && filteredProducts.length > 0 && (
+                            <ProductsInInventory
+                                products={filteredProducts}
+                                onSelect={handleSelectedProduct}
+                            />
+                        )}
+                        {/* ZERO matches → show nothing (optional message) */}
+                        {searchName.trim() && filteredProducts.length === 0 && (
+                            <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                className="border rounded-xl bg-gray-50 p-2 shadow-inner max-h-64 overflow-y-auto flex items-center justify-center"
+                            >
+                                <p className="text-sm text-gray-600">No products found</p>
+                            </motion.div>
+                        )}
                     </AnimatePresence>
 
-                    {/* Matching results */}
-                    {filteredProducts.length > 0 && (
-                        <ProductsInInventory
-                            products={filteredProducts}
-                            onSelect={handleSelectedProduct}
-                        />
-                    )}
+
             </div>
             </>
             )}
@@ -208,9 +229,9 @@ const UpdateInventoryPage = () => {
                     <button
                         onClick={() => {
                             setSelectedProduct(null);
-                            setSelectedCategory("")
-                            setQuantity(0);
+                            setSelectedCategory("");
                             setUnitPrice(0);
+                            setQuantity(0);
                             setRequestType("sell");
                         }}
                         className="absolute -top-4 right-4 bg-black text-white w-8 h-8 flex items-center justify-center rounded-full
@@ -220,102 +241,107 @@ const UpdateInventoryPage = () => {
                         <X className="h-5 w-5" />
                     </button>
                     <div className="p-4">
-                    <div className="mb-3">
-                        <label className="block text-sm font-medium text-gray-700">
-                            Product ID
-                        </label>
-                        <input
-                            type="text"
-                            value={selectedProduct.product_id}
-                            disabled
-                            className="w-full p-2 border rounded-lg bg-gray-100 text-gray-950"
-                        />
-                    </div>
-
-                    <div className="mb-3">
-                        <label className="block text-sm font-medium text-gray-700">
-                            Product Name
-                        </label>
-                        <input
-                            type="text"
-                            value={selectedProduct.productName}
-                            disabled
-                            className="w-full p-2 border rounded-lg bg-gray-100 text-gray-950"
-                        />
-                    </div>
-
-                    <div className="mb-3">
-                        <label className="block text-sm font-medium text-gray-700">
-                            Current Stock
-                        </label>
-                        <input
-                            type="number"
-                            value={selectedProduct.productStock}
-                            disabled
-                            className="w-full p-2 border rounded-lg bg-gray-100 text-gray-950"
-                        />
-                    </div>
-
-                    {/* Request type */}
-                    <div className="mb-4">
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Request Type
-                        </label>
-                        <div className="flex gap-4">
-                            <label className="flex items-center gap-2 text-gray-950">
-                                <input
-                                    type="radio"
-                                    name="requestType"
-                                    className="text-gray-950"
-                                    value="sell"
-                                    checked={requestType === "sell"}
-                                    onChange={() => setRequestType("sell")}
-                                />
-                                Sell
+                        <div className="mb-3">
+                            <label className="block text-sm font-medium text-gray-700">
+                                Product ID
                             </label>
-                            <label className="flex items-center gap-2 text-gray-950">
-                                <input
-                                    type="radio"
-                                    name="requestType"
-                                    className="text-gray-950"
-                                    value="procure"
-                                    checked={requestType === "procure"}
-                                    onChange={() => setRequestType("procure")}
-                                />
-                                Buy
-                            </label>
+                            <input
+                                type="text"
+                                value={selectedProduct.product_id}
+                                disabled
+                                className="w-full p-2 border rounded-lg bg-gray-100 text-gray-950"
+                            />
+                        </div>
 
+                        <div className="mb-3">
+                            <label className="block text-sm font-medium text-gray-700">
+                                Product Name
+                            </label>
+                            <input
+                                type="text"
+                                value={selectedProduct.productName}
+                                disabled
+                                className="w-full p-2 border rounded-lg bg-gray-100 text-gray-950"
+                            />
+                        </div>
+
+                        <div className="mb-3">
+                            <label className="block text-sm font-medium text-gray-700">
+                                Current Stock
+                            </label>
+                            <input
+                                type="number"
+                                value={selectedProduct.productStock}
+                                disabled
+                                className="w-full p-2 border rounded-lg bg-gray-100 text-gray-950"
+                            />
+                        </div>
+
+                        {/* Request type */}
+                        <div className="mb-4">
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                                Request Type
+                            </label>
+                            <div className="flex gap-4">
+                                <label className="flex items-center gap-2 text-gray-950">
+                                    <input
+                                        type="radio"
+                                        name="requestType"
+                                        className="text-gray-950"
+                                        value="sell"
+                                        checked={requestType === "sell"}
+                                        onChange={() => setRequestType("sell")}
+                                    />
+                                    Sell
+                                </label>
+                                <label className="flex items-center gap-2 text-gray-950">
+                                    <input
+                                        type="radio"
+                                        name="requestType"
+                                        className="text-gray-950"
+                                        value="procure"
+                                        checked={requestType === "procure"}
+                                        onChange={() => setRequestType("procure")}
+                                    />
+                                    Buy
+                                </label>
+
+                            </div>
+                        </div>
+
+                        {/* Quantity */}
+                        <div className="mb-3">
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                                Quantity
+                            </label>
+                            <input
+                                type="number"
+                                className="w-full p-2 border rounded-lg text-gray-950"
+                                placeholder="Enter Quantity"
+                                value={quantity === 0 ? "" : quantity}
+                                onChange={(e) => setQuantity(Number(e.target.value))}
+                            />
+                        </div>
+
+                        {/* Unit price */}
+                        <div className="mb-3">
+                            <label className="block text-sm font-medium text-gray-950 mb-1">
+                                {requestType === "sell" ? "Selling Price" : "Cost price"}
+                            </label>
+                            <input
+                                type="number"
+                                className="w-full p-2 border rounded-lg text-gray-950"
+                                placeholder="Enter unit price"
+                                value={(unitPrice === null ? "" : unitPrice)}
+                                onChange={(e) =>{
+                                    const val = e.target.value;
+                                if (val === "") setUnitPrice(null)
+                                    else setUnitPrice(Number(val))
+                                }}
+                            />
                         </div>
                     </div>
 
-                    {/* Quantity */}
-                    <div className="mb-3">
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Quantity
-                        </label>
-                        <input
-                            type="number"
-                            className="w-full p-2 border rounded-lg text-gray-950"
-                            placeholder="Enter Quantity"
-                            value={quantity === 0 ? "" : quantity}
-                            onChange={(e) => setQuantity(Number(e.target.value))}
-                        />
-                    </div>
-
-                    {/* Per unit price */}
-                    <div className="mb-3">
-                        <label className="block text-sm font-medium text-gray-950 mb-1">
-                            Per Unit Price
-                        </label>
-                        <input
-                            type="number"
-                            className="w-full p-2 border rounded-lg text-gray-950"
-                            placeholder="Enter unit price"
-                            value={unitPrice === 0 ? "" : unitPrice}
-                            onChange={(e) => setUnitPrice(Number(e.target.value))}
-                        />
-                    </div>
-                    </div>
                     {/* Update Button */}
                     <button
                         onClick={handleUpdateInventory}

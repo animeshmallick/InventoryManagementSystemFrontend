@@ -61,22 +61,6 @@ const ShowAllProductsPage = () => {
         return fuse.search(searchQuery).map(result => result.item);
     }, [fuse, products, searchQuery]);
 
-    const handleDelete = async (productId: string) => {
-        try {
-            const confirmed = confirm("Are you sure you want to delete this product?");
-            if (!confirmed) return;
-            apiHelper.deleteProduct(productId)
-                .then(res => {
-                    if (res.message.includes("deleted successfully"))
-                        setProducts(products.filter(p => p.product_id !== productId))
-                })
-                .catch(err => console.log(err))
-        } catch (err) {
-            console.error(err);
-            alert("Failed to delete product");
-        }
-    }
-
     return (
         <div className="flex flex-col items-center justify-start min-h-screen bg-gradient-to-br from-blue-50 to-blue-200">
             <NavigationPanel admin={admin} />
